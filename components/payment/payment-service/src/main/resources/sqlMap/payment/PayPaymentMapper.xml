@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayPaymentMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayPayment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="busi_code" jdbcType="VARCHAR" property="busiCode" />
+    <result column="pay_user_code" jdbcType="VARCHAR" property="payUserCode" />
+    <result column="pay_status" jdbcType="VARCHAR" property="payStatus" />
+    <result column="pay_way" jdbcType="VARCHAR" property="payWay" />
+    <result column="pay_amount" jdbcType="DECIMAL" property="payAmount" />
+    <result column="pay_unit" jdbcType="VARCHAR" property="payUnit" />
+    <result column="payee_user_id" jdbcType="VARCHAR" property="payeeUserId" />
+    <result column="payee_user_name" jdbcType="VARCHAR" property="payeeUserName" />
+    <result column="payee_id" jdbcType="VARCHAR" property="payeeId" />
+    <result column="payee_account_no" jdbcType="VARCHAR" property="payeeAccountNo" />
+    <result column="pay_init_time" jdbcType="TIMESTAMP" property="payInitTime" />
+    <result column="payee_result_time" jdbcType="TIMESTAMP" property="payeeResultTime" />
+    <result column="payee_error_code" jdbcType="VARCHAR" property="payeeErrorCode" />
+    <result column="pay_id" jdbcType="VARCHAR" property="payId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_payment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayPayment">
+    insert into t_pay_payment (id, busi_code, pay_user_code, 
+      pay_status, pay_way, pay_amount, 
+      pay_unit, payee_user_id, payee_user_name, 
+      payee_id, payee_account_no, pay_init_time, 
+      payee_result_time, payee_error_code, pay_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{busiCode,jdbcType=VARCHAR}, #{payUserCode,jdbcType=VARCHAR}, 
+      #{payStatus,jdbcType=VARCHAR}, #{payWay,jdbcType=VARCHAR}, #{payAmount,jdbcType=DECIMAL}, 
+      #{payUnit,jdbcType=VARCHAR}, #{payeeUserId,jdbcType=VARCHAR}, #{payeeUserName,jdbcType=VARCHAR}, 
+      #{payeeId,jdbcType=VARCHAR}, #{payeeAccountNo,jdbcType=VARCHAR}, #{payInitTime,jdbcType=TIMESTAMP}, 
+      #{payeeResultTime,jdbcType=TIMESTAMP}, #{payeeErrorCode,jdbcType=VARCHAR}, #{payId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayPayment">
+    update t_pay_payment
+    set busi_code = #{busiCode,jdbcType=VARCHAR},
+      pay_user_code = #{payUserCode,jdbcType=VARCHAR},
+      pay_status = #{payStatus,jdbcType=VARCHAR},
+      pay_way = #{payWay,jdbcType=VARCHAR},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      pay_unit = #{payUnit,jdbcType=VARCHAR},
+      payee_user_id = #{payeeUserId,jdbcType=VARCHAR},
+      payee_user_name = #{payeeUserName,jdbcType=VARCHAR},
+      payee_id = #{payeeId,jdbcType=VARCHAR},
+      payee_account_no = #{payeeAccountNo,jdbcType=VARCHAR},
+      pay_init_time = #{payInitTime,jdbcType=TIMESTAMP},
+      payee_result_time = #{payeeResultTime,jdbcType=TIMESTAMP},
+      payee_error_code = #{payeeErrorCode,jdbcType=VARCHAR},
+      pay_id = #{payId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, busi_code, pay_user_code, pay_status, pay_way, pay_amount, pay_unit, payee_user_id, 
+    payee_user_name, payee_id, payee_account_no, pay_init_time, payee_result_time, payee_error_code, 
+    pay_id
+    from t_pay_payment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, busi_code, pay_user_code, pay_status, pay_way, pay_amount, pay_unit, payee_user_id, 
+    payee_user_name, payee_id, payee_account_no, pay_init_time, payee_result_time, payee_error_code, 
+    pay_id
+    from t_pay_payment
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_payment where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayPayment" useGeneratedKeys="true">
+    insert into t_pay_payment (id, busi_code, pay_user_code, 
+      pay_status, pay_way, pay_amount, 
+      pay_unit, payee_user_id, payee_user_name, 
+      payee_id, payee_account_no, pay_init_time, 
+      payee_result_time, payee_error_code, pay_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{busiCode,jdbcType=VARCHAR}, #{payUserCode,jdbcType=VARCHAR}, 
+      #{payStatus,jdbcType=VARCHAR}, #{payWay,jdbcType=VARCHAR}, #{payAmount,jdbcType=DECIMAL}, 
+      #{payUnit,jdbcType=VARCHAR}, #{payeeUserId,jdbcType=VARCHAR}, #{payeeUserName,jdbcType=VARCHAR}, 
+      #{payeeId,jdbcType=VARCHAR}, #{payeeAccountNo,jdbcType=VARCHAR}, #{payInitTime,jdbcType=TIMESTAMP}, 
+      #{payeeResultTime,jdbcType=TIMESTAMP}, #{payeeErrorCode,jdbcType=VARCHAR}, #{payId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayPayment">
+    update t_pay_payment set 
+    <if test="busiCode != null">
+      busi_code = #{busiCode,jdbcType=VARCHAR},
+    </if>
+    <if test="payUserCode != null">
+      pay_user_code = #{payUserCode,jdbcType=VARCHAR},
+    </if>
+    <if test="payStatus != null">
+      pay_status = #{payStatus,jdbcType=VARCHAR},
+    </if>
+    <if test="payWay != null">
+      pay_way = #{payWay,jdbcType=VARCHAR},
+    </if>
+    <if test="payAmount != null">
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+    </if>
+    <if test="payUnit != null">
+      pay_unit = #{payUnit,jdbcType=VARCHAR},
+    </if>
+    <if test="payeeUserId != null">
+      payee_user_id = #{payeeUserId,jdbcType=VARCHAR},
+    </if>
+    <if test="payeeUserName != null">
+      payee_user_name = #{payeeUserName,jdbcType=VARCHAR},
+    </if>
+    <if test="payeeId != null">
+      payee_id = #{payeeId,jdbcType=VARCHAR},
+    </if>
+    <if test="payeeAccountNo != null">
+      payee_account_no = #{payeeAccountNo,jdbcType=VARCHAR},
+    </if>
+    <if test="payInitTime != null">
+      pay_init_time = #{payInitTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="payeeResultTime != null">
+      payee_result_time = #{payeeResultTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="payeeErrorCode != null">
+      payee_error_code = #{payeeErrorCode,jdbcType=VARCHAR},
+    </if>
+    <if test="payId != null">
+      pay_id = #{payId,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayPayment" resultMap="BaseResultMap">
+    select * from t_pay_payment where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="busiCode!=null">
+      and busi_code = #{busiCode,jdbcType=VARCHAR}
+    </if>
+    <if test="payUserCode!=null">
+      and pay_user_code = #{payUserCode,jdbcType=VARCHAR}
+    </if>
+    <if test="payStatus!=null">
+      and pay_status = #{payStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="payWay!=null">
+      and pay_way = #{payWay,jdbcType=VARCHAR}
+    </if>
+    <if test="payAmount!=null">
+      and pay_amount = #{payAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="payUnit!=null">
+      and pay_unit = #{payUnit,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeUserId!=null">
+      and payee_user_id = #{payeeUserId,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeUserName!=null">
+      and payee_user_name = #{payeeUserName,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeId!=null">
+      and payee_id = #{payeeId,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccountNo!=null">
+      and payee_account_no = #{payeeAccountNo,jdbcType=VARCHAR}
+    </if>
+    <if test="payInitTime!=null">
+      and pay_init_time = #{payInitTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="payeeResultTime!=null">
+      and payee_result_time = #{payeeResultTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="payeeErrorCode!=null">
+      and payee_error_code = #{payeeErrorCode,jdbcType=VARCHAR}
+    </if>
+    <if test="payId!=null">
+      and pay_id = #{payId,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

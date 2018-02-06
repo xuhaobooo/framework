@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyUserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.baby.domain.BabyUserInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="addr_name" jdbcType="VARCHAR" property="addrName" />
+    <result column="addr_pos_x" jdbcType="DOUBLE" property="addrPosX" />
+    <result column="addr_pos_y" jdbcType="DOUBLE" property="addrPosY" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_baby_user_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.baby.domain.BabyUserInfo">
+    insert into t_baby_user_info (id, addr_name, addr_pos_x, 
+      addr_pos_y, user_role, tel, 
+      note, user_code, user_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{addrName,jdbcType=VARCHAR}, #{addrPosX,jdbcType=DOUBLE}, 
+      #{addrPosY,jdbcType=DOUBLE}, #{userRole,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.baby.domain.BabyUserInfo">
+    update t_baby_user_info
+    set addr_name = #{addrName,jdbcType=VARCHAR},
+      addr_pos_x = #{addrPosX,jdbcType=DOUBLE},
+      addr_pos_y = #{addrPosY,jdbcType=DOUBLE},
+      user_role = #{userRole,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      user_code = #{userCode,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, addr_name, addr_pos_x, addr_pos_y, user_role, tel, note, user_code, user_name
+    from t_baby_user_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, addr_name, addr_pos_x, addr_pos_y, user_role, tel, note, user_code, user_name
+    from t_baby_user_info
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_baby_user_info where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.baby.domain.BabyUserInfo" useGeneratedKeys="true">
+    insert into t_baby_user_info (id, addr_name, addr_pos_x, 
+      addr_pos_y, user_role, tel, 
+      note, user_code, user_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{addrName,jdbcType=VARCHAR}, #{addrPosX,jdbcType=DOUBLE}, 
+      #{addrPosY,jdbcType=DOUBLE}, #{userRole,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.baby.domain.BabyUserInfo">
+    update t_baby_user_info set 
+    <if test="addrName != null">
+      addr_name = #{addrName,jdbcType=VARCHAR},
+    </if>
+    <if test="addrPosX != null">
+      addr_pos_x = #{addrPosX,jdbcType=DOUBLE},
+    </if>
+    <if test="addrPosY != null">
+      addr_pos_y = #{addrPosY,jdbcType=DOUBLE},
+    </if>
+    <if test="userRole != null">
+      user_role = #{userRole,jdbcType=VARCHAR},
+    </if>
+    <if test="tel != null">
+      tel = #{tel,jdbcType=VARCHAR},
+    </if>
+    <if test="note != null">
+      note = #{note,jdbcType=VARCHAR},
+    </if>
+    <if test="userCode != null">
+      user_code = #{userCode,jdbcType=VARCHAR},
+    </if>
+    <if test="userName != null">
+      user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.baby.domain.BabyUserInfo" resultMap="BaseResultMap">
+    select * from t_baby_user_info where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="addrName!=null">
+      and addr_name = #{addrName,jdbcType=VARCHAR}
+    </if>
+    <if test="addrPosX!=null">
+      and addr_pos_x = #{addrPosX,jdbcType=DOUBLE}
+    </if>
+    <if test="addrPosY!=null">
+      and addr_pos_y = #{addrPosY,jdbcType=DOUBLE}
+    </if>
+    <if test="userRole!=null">
+      and user_role = #{userRole,jdbcType=VARCHAR}
+    </if>
+    <if test="tel!=null">
+      and tel = #{tel,jdbcType=VARCHAR}
+    </if>
+    <if test="note!=null">
+      and note = #{note,jdbcType=VARCHAR}
+    </if>
+    <if test="userCode!=null">
+      and user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+    <if test="userName!=null">
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

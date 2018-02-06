@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayMoneyFlowMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.payment.dao.PayMoneyFlowMapper.BaseResultMap"
+		id="simplePayMoneyFlow" type="com.sz91online.bgms.module.payment.domain.SimplePayMoneyFlow" />
+		
+	<select id="findMine" resultMap="simplePayMoneyFlow">
+		select * from t_pay_money_flow where busi_user_code = #{user_code,jdbcType=VARCHAR}
+		<if test="start_time != null">
+			and record_time &gt; #{start_time,jdbcType=TIMESTAMP}
+		</if>
+		<if test="end_time != null">
+			and record_time &lt; #{end_time,jdbcType=TIMESTAMP}
+		</if>
+	</select>
+</mapper>

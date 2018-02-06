@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.user.domain.Role">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_u_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.user.domain.Role">
+    insert into t_u_role (id, role_name, status, 
+      role_desc, role_code)
+    values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{roleDesc,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.user.domain.Role">
+    update t_u_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      role_code = #{roleCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, role_name, status, role_desc, role_code
+    from t_u_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, role_name, status, role_desc, role_code
+    from t_u_role
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_u_role where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.user.domain.Role" useGeneratedKeys="true">
+    insert into t_u_role (id, role_name, status, 
+      role_desc, role_code)
+    values (#{id,jdbcType=BIGINT}, #{roleName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{roleDesc,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.user.domain.Role">
+    update t_u_role set 
+    <if test="roleName != null">
+      role_name = #{roleName,jdbcType=VARCHAR},
+    </if>
+    <if test="status != null">
+      status = #{status,jdbcType=CHAR},
+    </if>
+    <if test="roleDesc != null">
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="roleCode != null">
+      role_code = #{roleCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.user.domain.Role" resultMap="BaseResultMap">
+    select * from t_u_role where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="roleName!=null">
+      and role_name = #{roleName,jdbcType=VARCHAR}
+    </if>
+    <if test="status!=null">
+      and status = #{status,jdbcType=CHAR}
+    </if>
+    <if test="roleDesc!=null">
+      and role_desc = #{roleDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="roleCode!=null">
+      and role_code = #{roleCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

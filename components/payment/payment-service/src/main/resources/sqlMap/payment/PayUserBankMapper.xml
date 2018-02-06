@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayUserBankMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayUserBank">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="bank" jdbcType="VARCHAR" property="bank" />
+    <result column="account_no" jdbcType="VARCHAR" property="accountNo" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_user_bank
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayUserBank">
+    insert into t_pay_user_bank (id, user_code, account_name, 
+      bank, account_no)
+    values (#{id,jdbcType=BIGINT}, #{userCode,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{bank,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayUserBank">
+    update t_pay_user_bank
+    set user_code = #{userCode,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      bank = #{bank,jdbcType=VARCHAR},
+      account_no = #{accountNo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_code, account_name, bank, account_no
+    from t_pay_user_bank
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_code, account_name, bank, account_no
+    from t_pay_user_bank
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_user_bank where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayUserBank" useGeneratedKeys="true">
+    insert into t_pay_user_bank (id, user_code, account_name, 
+      bank, account_no)
+    values (#{id,jdbcType=BIGINT}, #{userCode,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{bank,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayUserBank">
+    update t_pay_user_bank set 
+    <if test="userCode != null">
+      user_code = #{userCode,jdbcType=VARCHAR},
+    </if>
+    <if test="accountName != null">
+      account_name = #{accountName,jdbcType=VARCHAR},
+    </if>
+    <if test="bank != null">
+      bank = #{bank,jdbcType=VARCHAR},
+    </if>
+    <if test="accountNo != null">
+      account_no = #{accountNo,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayUserBank" resultMap="BaseResultMap">
+    select * from t_pay_user_bank where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="userCode!=null">
+      and user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+    <if test="accountName!=null">
+      and account_name = #{accountName,jdbcType=VARCHAR}
+    </if>
+    <if test="bank!=null">
+      and bank = #{bank,jdbcType=VARCHAR}
+    </if>
+    <if test="accountNo!=null">
+      and account_no = #{accountNo,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

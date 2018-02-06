@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.AuthMapperExt">
+  
+  <resultMap extends="com.sz91online.bgms.module.user.dao.AuthMapper.BaseResultMap" id="simpleAuth" type="com.sz91online.bgms.module.user.domain.SimpleAuth" >
+  
+  	<result column="user_code" jdbcType="VARCHAR" property="userCode" />
+  </resultMap>
+
+	<select id="findAuthByUserCode" resultMap="simpleAuth">
+	
+		select auth.*,user_auth.user_code from T_U_AUTH auth inner join T_U_USER_AUTH user_auth
+		on auth.auth_code = user_auth.auth_code
+		where auth.auth_type=0 and user_auth.user_code = #{param1}
+	
+	</select>
+	
+	<select id="findAuthByUserCodeWithRole" resultMap="simpleAuth">
+	
+		select auth.*,user_role.user_code from T_U_AUTH auth 
+		inner join T_U_ROLE_AUTH role_auth on auth.auth_code = role_auth.auth_code
+		inner join T_U_ROLE role on role.role_code = role_auth.role_code
+		INNER JOIN T_U_USER_ROLE user_role ON role_auth.role_code = user_role.role_code   
+		WHERE auth.auth_type=0 and role.status='N' and user_role.user_code = #{param1}
+	
+	</select>
+	
+	<select id="getAuthByRoleCode" resultMap="com.sz91online.bgms.module.user.dao.AuthMapper.BaseResultMap">
+	
+		select auth.id, auth.auth_code, auth.auth_name from T_U_AUTH auth inner join T_U_ROLE_AUTH role_auth
+		on auth.auth_code = role_auth.auth_code 
+		WHERE role_auth.role_code = #{param1}
+	
+	</select>
+	
+	<insert id="addRoleAuth" >
+		insert into T_U_ROLE_AUTH (role_code, auth_code,create_time) values (#{param1}, #{param2},NOW())
+	</insert>
+	
+	<delete id="removeRoleAuth" >
+		delete from  T_U_ROLE_AUTH where role_code=#{param1} and auth_code=#{param2}
+	</delete>
+
+</mapper>

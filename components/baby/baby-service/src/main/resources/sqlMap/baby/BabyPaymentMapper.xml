@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyPaymentMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.baby.domain.BabyPayment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
+    <result column="amount" jdbcType="REAL" property="amount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="busi_payment_code1" jdbcType="VARCHAR" property="busiPaymentCode1" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_baby_payment_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.baby.domain.BabyPayment">
+    insert into t_baby_payment_record (id, payment_type, amount, 
+      create_time, payment_status, last_update_time, 
+      busi_payment_code1)
+    values (#{id,jdbcType=BIGINT}, #{paymentType,jdbcType=VARCHAR}, #{amount,jdbcType=REAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{paymentStatus,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{busiPaymentCode1,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.baby.domain.BabyPayment">
+    update t_baby_payment_record
+    set payment_type = #{paymentType,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=REAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      payment_status = #{paymentStatus,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      busi_payment_code1 = #{busiPaymentCode1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, payment_type, amount, create_time, payment_status, last_update_time, busi_payment_code1
+    from t_baby_payment_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, payment_type, amount, create_time, payment_status, last_update_time, busi_payment_code1
+    from t_baby_payment_record
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_baby_payment_record where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.baby.domain.BabyPayment" useGeneratedKeys="true">
+    insert into t_baby_payment_record (id, payment_type, amount, 
+      create_time, payment_status, last_update_time, 
+      busi_payment_code1)
+    values (#{id,jdbcType=BIGINT}, #{paymentType,jdbcType=VARCHAR}, #{amount,jdbcType=REAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{paymentStatus,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{busiPaymentCode1,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.baby.domain.BabyPayment">
+    update t_baby_payment_record set 
+    <if test="paymentType != null">
+      payment_type = #{paymentType,jdbcType=VARCHAR},
+    </if>
+    <if test="amount != null">
+      amount = #{amount,jdbcType=REAL},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="paymentStatus != null">
+      payment_status = #{paymentStatus,jdbcType=VARCHAR},
+    </if>
+    <if test="lastUpdateTime != null">
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="busiPaymentCode1 != null">
+      busi_payment_code1 = #{busiPaymentCode1,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.baby.domain.BabyPayment" resultMap="BaseResultMap">
+    select * from t_baby_payment_record where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="paymentType!=null">
+      and payment_type = #{paymentType,jdbcType=VARCHAR}
+    </if>
+    <if test="amount!=null">
+      and amount = #{amount,jdbcType=REAL}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="paymentStatus!=null">
+      and payment_status = #{paymentStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="lastUpdateTime!=null">
+      and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="busiPaymentCode1!=null">
+      and busi_payment_code1 = #{busiPaymentCode1,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

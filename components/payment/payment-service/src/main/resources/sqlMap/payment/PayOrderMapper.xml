@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayOrderMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="from_user_code" jdbcType="VARCHAR" property="fromUserCode" />
+    <result column="to_user_code" jdbcType="VARCHAR" property="toUserCode" />
+    <result column="pay_id" jdbcType="VARCHAR" property="payId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="busi_type" jdbcType="VARCHAR" property="busiType" />
+    <result column="order_record_code" jdbcType="VARCHAR" property="orderRecordCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+    <result column="busi_code" jdbcType="VARCHAR" property="busiCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayOrder">
+    insert into t_pay_order (id, from_user_code, to_user_code, 
+      pay_id, amount, unit, 
+      record_time, busi_type, order_record_code, 
+      create_time, order_status, busi_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{fromUserCode,jdbcType=VARCHAR}, #{toUserCode,jdbcType=VARCHAR}, 
+      #{payId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{recordTime,jdbcType=TIMESTAMP}, #{busiType,jdbcType=VARCHAR}, #{orderRecordCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=VARCHAR}, #{busiCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayOrder">
+    update t_pay_order
+    set from_user_code = #{fromUserCode,jdbcType=VARCHAR},
+      to_user_code = #{toUserCode,jdbcType=VARCHAR},
+      pay_id = #{payId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      record_time = #{recordTime,jdbcType=TIMESTAMP},
+      busi_type = #{busiType,jdbcType=VARCHAR},
+      order_record_code = #{orderRecordCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+      busi_code = #{busiCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, from_user_code, to_user_code, pay_id, amount, unit, record_time, busi_type, 
+    order_record_code, create_time, order_status, busi_code
+    from t_pay_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, from_user_code, to_user_code, pay_id, amount, unit, record_time, busi_type, 
+    order_record_code, create_time, order_status, busi_code
+    from t_pay_order
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_order where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayOrder" useGeneratedKeys="true">
+    insert into t_pay_order (id, from_user_code, to_user_code, 
+      pay_id, amount, unit, 
+      record_time, busi_type, order_record_code, 
+      create_time, order_status, busi_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{fromUserCode,jdbcType=VARCHAR}, #{toUserCode,jdbcType=VARCHAR}, 
+      #{payId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{recordTime,jdbcType=TIMESTAMP}, #{busiType,jdbcType=VARCHAR}, #{orderRecordCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{orderStatus,jdbcType=VARCHAR}, #{busiCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayOrder">
+    update t_pay_order set 
+    <if test="fromUserCode != null">
+      from_user_code = #{fromUserCode,jdbcType=VARCHAR},
+    </if>
+    <if test="toUserCode != null">
+      to_user_code = #{toUserCode,jdbcType=VARCHAR},
+    </if>
+    <if test="payId != null">
+      pay_id = #{payId,jdbcType=VARCHAR},
+    </if>
+    <if test="amount != null">
+      amount = #{amount,jdbcType=DECIMAL},
+    </if>
+    <if test="unit != null">
+      unit = #{unit,jdbcType=VARCHAR},
+    </if>
+    <if test="recordTime != null">
+      record_time = #{recordTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="busiType != null">
+      busi_type = #{busiType,jdbcType=VARCHAR},
+    </if>
+    <if test="orderRecordCode != null">
+      order_record_code = #{orderRecordCode,jdbcType=VARCHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="orderStatus != null">
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+    </if>
+    <if test="busiCode != null">
+      busi_code = #{busiCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayOrder" resultMap="BaseResultMap">
+    select * from t_pay_order where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="fromUserCode!=null">
+      and from_user_code = #{fromUserCode,jdbcType=VARCHAR}
+    </if>
+    <if test="toUserCode!=null">
+      and to_user_code = #{toUserCode,jdbcType=VARCHAR}
+    </if>
+    <if test="payId!=null">
+      and pay_id = #{payId,jdbcType=VARCHAR}
+    </if>
+    <if test="amount!=null">
+      and amount = #{amount,jdbcType=DECIMAL}
+    </if>
+    <if test="unit!=null">
+      and unit = #{unit,jdbcType=VARCHAR}
+    </if>
+    <if test="recordTime!=null">
+      and record_time = #{recordTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="busiType!=null">
+      and busi_type = #{busiType,jdbcType=VARCHAR}
+    </if>
+    <if test="orderRecordCode!=null">
+      and order_record_code = #{orderRecordCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="orderStatus!=null">
+      and order_status = #{orderStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="busiCode!=null">
+      and busi_code = #{busiCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

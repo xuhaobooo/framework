@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.common.dao.AppUpdateFileMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.common.domain.AppUpdateFile">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="app_code" jdbcType="VARCHAR" property="appCode" />
+    <result column="version_name" jdbcType="VARCHAR" property="versionName" />
+    <result column="version_code" jdbcType="INTEGER" property="versionCode" />
+    <result column="file_code" jdbcType="VARCHAR" property="fileCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_dict_app_publish
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateFile">
+    insert into t_dict_app_publish (id, app_code, version_name, 
+      version_code, file_code, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{appCode,jdbcType=VARCHAR}, #{versionName,jdbcType=VARCHAR}, 
+      #{versionCode,jdbcType=INTEGER}, #{fileCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateFile">
+    update t_dict_app_publish
+    set app_code = #{appCode,jdbcType=VARCHAR},
+      version_name = #{versionName,jdbcType=VARCHAR},
+      version_code = #{versionCode,jdbcType=INTEGER},
+      file_code = #{fileCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, app_code, version_name, version_code, file_code, create_time
+    from t_dict_app_publish
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, app_code, version_name, version_code, file_code, create_time
+    from t_dict_app_publish
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_dict_app_publish where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateFile" useGeneratedKeys="true">
+    insert into t_dict_app_publish (id, app_code, version_name, 
+      version_code, file_code, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{appCode,jdbcType=VARCHAR}, #{versionName,jdbcType=VARCHAR}, 
+      #{versionCode,jdbcType=INTEGER}, #{fileCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateFile">
+    update t_dict_app_publish set 
+    <if test="appCode != null">
+      app_code = #{appCode,jdbcType=VARCHAR},
+    </if>
+    <if test="versionName != null">
+      version_name = #{versionName,jdbcType=VARCHAR},
+    </if>
+    <if test="versionCode != null">
+      version_code = #{versionCode,jdbcType=INTEGER},
+    </if>
+    <if test="fileCode != null">
+      file_code = #{fileCode,jdbcType=VARCHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateFile" resultMap="BaseResultMap">
+    select * from t_dict_app_publish where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="appCode!=null">
+      and app_code = #{appCode,jdbcType=VARCHAR}
+    </if>
+    <if test="versionName!=null">
+      and version_name = #{versionName,jdbcType=VARCHAR}
+    </if>
+    <if test="versionCode!=null">
+      and version_code = #{versionCode,jdbcType=INTEGER}
+    </if>
+    <if test="fileCode!=null">
+      and file_code = #{fileCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+</mapper>

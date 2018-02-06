@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyRequireItemDictMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="item_price" jdbcType="REAL" property="itemPrice" />
+    <result column="enable_flag" jdbcType="BIT" property="enableFlag" />
+    <result column="item_code" jdbcType="VARCHAR" property="itemCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_baby_item_list
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict">
+    insert into t_baby_item_list (id, item_name, item_price, 
+      enable_flag, item_code)
+    values (#{id,jdbcType=BIGINT}, #{itemName,jdbcType=VARCHAR}, #{itemPrice,jdbcType=REAL}, 
+      #{enableFlag,jdbcType=BIT}, #{itemCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict">
+    update t_baby_item_list
+    set item_name = #{itemName,jdbcType=VARCHAR},
+      item_price = #{itemPrice,jdbcType=REAL},
+      enable_flag = #{enableFlag,jdbcType=BIT},
+      item_code = #{itemCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, item_name, item_price, enable_flag, item_code
+    from t_baby_item_list
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, item_name, item_price, enable_flag, item_code
+    from t_baby_item_list
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_baby_item_list where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict" useGeneratedKeys="true">
+    insert into t_baby_item_list (id, item_name, item_price, 
+      enable_flag, item_code)
+    values (#{id,jdbcType=BIGINT}, #{itemName,jdbcType=VARCHAR}, #{itemPrice,jdbcType=REAL}, 
+      #{enableFlag,jdbcType=BIT}, #{itemCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict">
+    update t_baby_item_list set 
+    <if test="itemName != null">
+      item_name = #{itemName,jdbcType=VARCHAR},
+    </if>
+    <if test="itemPrice != null">
+      item_price = #{itemPrice,jdbcType=REAL},
+    </if>
+    <if test="enableFlag != null">
+      enable_flag = #{enableFlag,jdbcType=BIT},
+    </if>
+    <if test="itemCode != null">
+      item_code = #{itemCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequireItemDict" resultMap="BaseResultMap">
+    select * from t_baby_item_list where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="itemName!=null">
+      and item_name = #{itemName,jdbcType=VARCHAR}
+    </if>
+    <if test="itemPrice!=null">
+      and item_price = #{itemPrice,jdbcType=REAL}
+    </if>
+    <if test="enableFlag!=null">
+      and enable_flag = #{enableFlag,jdbcType=BIT}
+    </if>
+    <if test="itemCode!=null">
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

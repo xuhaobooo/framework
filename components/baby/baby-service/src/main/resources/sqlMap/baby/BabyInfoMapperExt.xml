@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyInfoMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.baby.dao.BabyInfoMapper.BaseResultMap"
+		id="simpleBabyInfo" type="com.sz91online.bgms.module.baby.domain.SimpleBabyInfo" />
+
+	<insert id="addBabyToUser" parameterType="String">
+		insert into
+		T_BABY_USER_BABY (user_code,baby_code,create_time) values
+		(#{param1,jdbcType=VARCHAR},#{param2,jdbcType=VARCHAR},NOW())
+	</insert>
+
+	<select id="findByUserCode" parameterType="String" resultMap="simpleBabyInfo">
+		select baby.* from 
+		T_BABY_INFO baby inner join T_BABY_USER_BABY ref on baby.baby_code = ref.baby_code where ref.user_code = #{param1,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="removeBabyFromUser" parameterType="String" >
+		delete from
+		T_BABY_USER_BABY where user_code=#{param1,jdbcType=VARCHAR} and
+		baby_code=#{param2,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

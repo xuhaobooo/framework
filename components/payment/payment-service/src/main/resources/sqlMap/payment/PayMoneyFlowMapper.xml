@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayMoneyFlowMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayMoneyFlow">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="order_record_code" jdbcType="VARCHAR" property="orderRecordCode" />
+    <result column="busi_type" jdbcType="VARCHAR" property="busiType" />
+    <result column="busi_user_code" jdbcType="VARCHAR" property="busiUserCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_money_flow
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayMoneyFlow">
+    insert into t_pay_money_flow (id, amount, unit, 
+      record_time, order_record_code, busi_type, 
+      busi_user_code)
+    values (#{id,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{recordTime,jdbcType=TIMESTAMP}, #{orderRecordCode,jdbcType=VARCHAR}, #{busiType,jdbcType=VARCHAR}, 
+      #{busiUserCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayMoneyFlow">
+    update t_pay_money_flow
+    set amount = #{amount,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=VARCHAR},
+      record_time = #{recordTime,jdbcType=TIMESTAMP},
+      order_record_code = #{orderRecordCode,jdbcType=VARCHAR},
+      busi_type = #{busiType,jdbcType=VARCHAR},
+      busi_user_code = #{busiUserCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, amount, unit, record_time, order_record_code, busi_type, busi_user_code
+    from t_pay_money_flow
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, amount, unit, record_time, order_record_code, busi_type, busi_user_code
+    from t_pay_money_flow
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_money_flow where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayMoneyFlow" useGeneratedKeys="true">
+    insert into t_pay_money_flow (id, amount, unit, 
+      record_time, order_record_code, busi_type, 
+      busi_user_code)
+    values (#{id,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, 
+      #{recordTime,jdbcType=TIMESTAMP}, #{orderRecordCode,jdbcType=VARCHAR}, #{busiType,jdbcType=VARCHAR}, 
+      #{busiUserCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayMoneyFlow">
+    update t_pay_money_flow set 
+    <if test="amount != null">
+      amount = #{amount,jdbcType=DECIMAL},
+    </if>
+    <if test="unit != null">
+      unit = #{unit,jdbcType=VARCHAR},
+    </if>
+    <if test="recordTime != null">
+      record_time = #{recordTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="orderRecordCode != null">
+      order_record_code = #{orderRecordCode,jdbcType=VARCHAR},
+    </if>
+    <if test="busiType != null">
+      busi_type = #{busiType,jdbcType=VARCHAR},
+    </if>
+    <if test="busiUserCode != null">
+      busi_user_code = #{busiUserCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayMoneyFlow" resultMap="BaseResultMap">
+    select * from t_pay_money_flow where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="amount!=null">
+      and amount = #{amount,jdbcType=DECIMAL}
+    </if>
+    <if test="unit!=null">
+      and unit = #{unit,jdbcType=VARCHAR}
+    </if>
+    <if test="recordTime!=null">
+      and record_time = #{recordTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="orderRecordCode!=null">
+      and order_record_code = #{orderRecordCode,jdbcType=VARCHAR}
+    </if>
+    <if test="busiType!=null">
+      and busi_type = #{busiType,jdbcType=VARCHAR}
+    </if>
+    <if test="busiUserCode!=null">
+      and busi_user_code = #{busiUserCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.user.domain.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_desc" jdbcType="VARCHAR" property="userDesc" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="access_code" jdbcType="VARCHAR" property="accessCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_u_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.user.domain.User">
+    insert into t_u_user (id, last_name, login_name, 
+      password, status, create_time, 
+      user_code, user_desc, dept_code, 
+      email, first_name, access_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{lastName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{userCode,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{accessCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.user.domain.User">
+    update t_u_user
+    set last_name = #{lastName,jdbcType=VARCHAR},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      user_code = #{userCode,jdbcType=VARCHAR},
+      user_desc = #{userDesc,jdbcType=VARCHAR},
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      first_name = #{firstName,jdbcType=VARCHAR},
+      access_code = #{accessCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, last_name, login_name, password, status, create_time, user_code, user_desc, 
+    dept_code, email, first_name, access_code
+    from t_u_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, last_name, login_name, password, status, create_time, user_code, user_desc, 
+    dept_code, email, first_name, access_code
+    from t_u_user
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_u_user where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.user.domain.User" useGeneratedKeys="true">
+    insert into t_u_user (id, last_name, login_name, 
+      password, status, create_time, 
+      user_code, user_desc, dept_code, 
+      email, first_name, access_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{lastName,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{userCode,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{accessCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.user.domain.User">
+    update t_u_user set 
+    <if test="lastName != null">
+      last_name = #{lastName,jdbcType=VARCHAR},
+    </if>
+    <if test="loginName != null">
+      login_name = #{loginName,jdbcType=VARCHAR},
+    </if>
+    <if test="password != null">
+      password = #{password,jdbcType=VARCHAR},
+    </if>
+    <if test="status != null">
+      status = #{status,jdbcType=CHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="userCode != null">
+      user_code = #{userCode,jdbcType=VARCHAR},
+    </if>
+    <if test="userDesc != null">
+      user_desc = #{userDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="deptCode != null">
+      dept_code = #{deptCode,jdbcType=VARCHAR},
+    </if>
+    <if test="email != null">
+      email = #{email,jdbcType=VARCHAR},
+    </if>
+    <if test="firstName != null">
+      first_name = #{firstName,jdbcType=VARCHAR},
+    </if>
+    <if test="accessCode != null">
+      access_code = #{accessCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.user.domain.User" resultMap="BaseResultMap">
+    select * from t_u_user where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="lastName!=null">
+      and last_name = #{lastName,jdbcType=VARCHAR}
+    </if>
+    <if test="loginName!=null">
+      and login_name = #{loginName,jdbcType=VARCHAR}
+    </if>
+    <if test="password!=null">
+      and password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="status!=null">
+      and status = #{status,jdbcType=CHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="userCode!=null">
+      and user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+    <if test="userDesc!=null">
+      and user_desc = #{userDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="deptCode!=null">
+      and dept_code = #{deptCode,jdbcType=VARCHAR}
+    </if>
+    <if test="email!=null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="firstName!=null">
+      and first_name = #{firstName,jdbcType=VARCHAR}
+    </if>
+    <if test="accessCode!=null">
+      and access_code = #{accessCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

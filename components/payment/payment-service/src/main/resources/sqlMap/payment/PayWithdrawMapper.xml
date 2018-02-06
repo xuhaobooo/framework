@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayWithdrawMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayWithdraw">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="wd_account_name" jdbcType="VARCHAR" property="wdAccountName" />
+    <result column="wd_bank" jdbcType="VARCHAR" property="wdBank" />
+    <result column="wd_account_no" jdbcType="VARCHAR" property="wdAccountNo" />
+    <result column="wd_amount" jdbcType="DECIMAL" property="wdAmount" />
+    <result column="wd_unit" jdbcType="VARCHAR" property="wdUnit" />
+    <result column="wd_init_time" jdbcType="TIMESTAMP" property="wdInitTime" />
+    <result column="wd_status" jdbcType="VARCHAR" property="wdStatus" />
+    <result column="wd_result_time" jdbcType="TIMESTAMP" property="wdResultTime" />
+    <result column="wd_error_code" jdbcType="VARCHAR" property="wdErrorCode" />
+    <result column="wd_way" jdbcType="VARCHAR" property="wdWay" />
+    <result column="pay_bank_id" jdbcType="VARCHAR" property="payBankId" />
+    <result column="busi_user_code" jdbcType="VARCHAR" property="busiUserCode" />
+    <result column="wd_code" jdbcType="VARCHAR" property="wdCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_withdraw
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayWithdraw">
+    insert into t_pay_withdraw (id, wd_account_name, wd_bank, 
+      wd_account_no, wd_amount, wd_unit, 
+      wd_init_time, wd_status, wd_result_time, 
+      wd_error_code, wd_way, pay_bank_id, 
+      busi_user_code, wd_code)
+    values (#{id,jdbcType=BIGINT}, #{wdAccountName,jdbcType=VARCHAR}, #{wdBank,jdbcType=VARCHAR}, 
+      #{wdAccountNo,jdbcType=VARCHAR}, #{wdAmount,jdbcType=DECIMAL}, #{wdUnit,jdbcType=VARCHAR}, 
+      #{wdInitTime,jdbcType=TIMESTAMP}, #{wdStatus,jdbcType=VARCHAR}, #{wdResultTime,jdbcType=TIMESTAMP}, 
+      #{wdErrorCode,jdbcType=VARCHAR}, #{wdWay,jdbcType=VARCHAR}, #{payBankId,jdbcType=VARCHAR}, 
+      #{busiUserCode,jdbcType=VARCHAR}, #{wdCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayWithdraw">
+    update t_pay_withdraw
+    set wd_account_name = #{wdAccountName,jdbcType=VARCHAR},
+      wd_bank = #{wdBank,jdbcType=VARCHAR},
+      wd_account_no = #{wdAccountNo,jdbcType=VARCHAR},
+      wd_amount = #{wdAmount,jdbcType=DECIMAL},
+      wd_unit = #{wdUnit,jdbcType=VARCHAR},
+      wd_init_time = #{wdInitTime,jdbcType=TIMESTAMP},
+      wd_status = #{wdStatus,jdbcType=VARCHAR},
+      wd_result_time = #{wdResultTime,jdbcType=TIMESTAMP},
+      wd_error_code = #{wdErrorCode,jdbcType=VARCHAR},
+      wd_way = #{wdWay,jdbcType=VARCHAR},
+      pay_bank_id = #{payBankId,jdbcType=VARCHAR},
+      busi_user_code = #{busiUserCode,jdbcType=VARCHAR},
+      wd_code = #{wdCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, wd_account_name, wd_bank, wd_account_no, wd_amount, wd_unit, wd_init_time, 
+    wd_status, wd_result_time, wd_error_code, wd_way, pay_bank_id, busi_user_code, wd_code
+    from t_pay_withdraw
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, wd_account_name, wd_bank, wd_account_no, wd_amount, wd_unit, wd_init_time, 
+    wd_status, wd_result_time, wd_error_code, wd_way, pay_bank_id, busi_user_code, wd_code
+    from t_pay_withdraw
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_withdraw where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayWithdraw" useGeneratedKeys="true">
+    insert into t_pay_withdraw (id, wd_account_name, wd_bank, 
+      wd_account_no, wd_amount, wd_unit, 
+      wd_init_time, wd_status, wd_result_time, 
+      wd_error_code, wd_way, pay_bank_id, 
+      busi_user_code, wd_code)
+    values (#{id,jdbcType=BIGINT}, #{wdAccountName,jdbcType=VARCHAR}, #{wdBank,jdbcType=VARCHAR}, 
+      #{wdAccountNo,jdbcType=VARCHAR}, #{wdAmount,jdbcType=DECIMAL}, #{wdUnit,jdbcType=VARCHAR}, 
+      #{wdInitTime,jdbcType=TIMESTAMP}, #{wdStatus,jdbcType=VARCHAR}, #{wdResultTime,jdbcType=TIMESTAMP}, 
+      #{wdErrorCode,jdbcType=VARCHAR}, #{wdWay,jdbcType=VARCHAR}, #{payBankId,jdbcType=VARCHAR}, 
+      #{busiUserCode,jdbcType=VARCHAR}, #{wdCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayWithdraw">
+    update t_pay_withdraw set 
+    <if test="wdAccountName != null">
+      wd_account_name = #{wdAccountName,jdbcType=VARCHAR},
+    </if>
+    <if test="wdBank != null">
+      wd_bank = #{wdBank,jdbcType=VARCHAR},
+    </if>
+    <if test="wdAccountNo != null">
+      wd_account_no = #{wdAccountNo,jdbcType=VARCHAR},
+    </if>
+    <if test="wdAmount != null">
+      wd_amount = #{wdAmount,jdbcType=DECIMAL},
+    </if>
+    <if test="wdUnit != null">
+      wd_unit = #{wdUnit,jdbcType=VARCHAR},
+    </if>
+    <if test="wdInitTime != null">
+      wd_init_time = #{wdInitTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="wdStatus != null">
+      wd_status = #{wdStatus,jdbcType=VARCHAR},
+    </if>
+    <if test="wdResultTime != null">
+      wd_result_time = #{wdResultTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="wdErrorCode != null">
+      wd_error_code = #{wdErrorCode,jdbcType=VARCHAR},
+    </if>
+    <if test="wdWay != null">
+      wd_way = #{wdWay,jdbcType=VARCHAR},
+    </if>
+    <if test="payBankId != null">
+      pay_bank_id = #{payBankId,jdbcType=VARCHAR},
+    </if>
+    <if test="busiUserCode != null">
+      busi_user_code = #{busiUserCode,jdbcType=VARCHAR},
+    </if>
+    <if test="wdCode != null">
+      wd_code = #{wdCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayWithdraw" resultMap="BaseResultMap">
+    select * from t_pay_withdraw where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="wdAccountName!=null">
+      and wd_account_name = #{wdAccountName,jdbcType=VARCHAR}
+    </if>
+    <if test="wdBank!=null">
+      and wd_bank = #{wdBank,jdbcType=VARCHAR}
+    </if>
+    <if test="wdAccountNo!=null">
+      and wd_account_no = #{wdAccountNo,jdbcType=VARCHAR}
+    </if>
+    <if test="wdAmount!=null">
+      and wd_amount = #{wdAmount,jdbcType=DECIMAL}
+    </if>
+    <if test="wdUnit!=null">
+      and wd_unit = #{wdUnit,jdbcType=VARCHAR}
+    </if>
+    <if test="wdInitTime!=null">
+      and wd_init_time = #{wdInitTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="wdStatus!=null">
+      and wd_status = #{wdStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="wdResultTime!=null">
+      and wd_result_time = #{wdResultTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="wdErrorCode!=null">
+      and wd_error_code = #{wdErrorCode,jdbcType=VARCHAR}
+    </if>
+    <if test="wdWay!=null">
+      and wd_way = #{wdWay,jdbcType=VARCHAR}
+    </if>
+    <if test="payBankId!=null">
+      and pay_bank_id = #{payBankId,jdbcType=VARCHAR}
+    </if>
+    <if test="busiUserCode!=null">
+      and busi_user_code = #{busiUserCode,jdbcType=VARCHAR}
+    </if>
+    <if test="wdCode!=null">
+      and wd_code = #{wdCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

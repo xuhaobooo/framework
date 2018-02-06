@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyRequireMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.baby.domain.BabyRequire">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="addr_name" jdbcType="VARCHAR" property="addrName" />
+    <result column="addr_pos_x" jdbcType="DOUBLE" property="addrPosX" />
+    <result column="addr_pos_y" jdbcType="DOUBLE" property="addrPosY" />
+    <result column="baby_name" jdbcType="VARCHAR" property="babyName" />
+    <result column="baby_age" jdbcType="INTEGER" property="babyAge" />
+    <result column="baby_sex" jdbcType="VARCHAR" property="babySex" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="require_code" jdbcType="VARCHAR" property="requireCode" />
+    <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+    <result column="pay_more" jdbcType="REAL" property="payMore" />
+    <result column="fee_amount" jdbcType="REAL" property="feeAmount" />
+    <result column="require_status" jdbcType="VARCHAR" property="requireStatus" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_baby_require
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequire">
+    insert into t_baby_require (id, start_time, end_time, 
+      addr_name, addr_pos_x, addr_pos_y, 
+      baby_name, baby_age, baby_sex, 
+      create_time, require_code, credit_code, 
+      pay_more, fee_amount, require_status, 
+      user_code)
+    values (#{id,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{addrName,jdbcType=VARCHAR}, #{addrPosX,jdbcType=DOUBLE}, #{addrPosY,jdbcType=DOUBLE}, 
+      #{babyName,jdbcType=VARCHAR}, #{babyAge,jdbcType=INTEGER}, #{babySex,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{requireCode,jdbcType=VARCHAR}, #{creditCode,jdbcType=VARCHAR}, 
+      #{payMore,jdbcType=REAL}, #{feeAmount,jdbcType=REAL}, #{requireStatus,jdbcType=VARCHAR}, 
+      #{userCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequire">
+    update t_baby_require
+    set start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      addr_name = #{addrName,jdbcType=VARCHAR},
+      addr_pos_x = #{addrPosX,jdbcType=DOUBLE},
+      addr_pos_y = #{addrPosY,jdbcType=DOUBLE},
+      baby_name = #{babyName,jdbcType=VARCHAR},
+      baby_age = #{babyAge,jdbcType=INTEGER},
+      baby_sex = #{babySex,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      require_code = #{requireCode,jdbcType=VARCHAR},
+      credit_code = #{creditCode,jdbcType=VARCHAR},
+      pay_more = #{payMore,jdbcType=REAL},
+      fee_amount = #{feeAmount,jdbcType=REAL},
+      require_status = #{requireStatus,jdbcType=VARCHAR},
+      user_code = #{userCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, start_time, end_time, addr_name, addr_pos_x, addr_pos_y, baby_name, baby_age, 
+    baby_sex, create_time, require_code, credit_code, pay_more, fee_amount, require_status, 
+    user_code
+    from t_baby_require
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, start_time, end_time, addr_name, addr_pos_x, addr_pos_y, baby_name, baby_age, 
+    baby_sex, create_time, require_code, credit_code, pay_more, fee_amount, require_status, 
+    user_code
+    from t_baby_require
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_baby_require where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequire" useGeneratedKeys="true">
+    insert into t_baby_require (id, start_time, end_time, 
+      addr_name, addr_pos_x, addr_pos_y, 
+      baby_name, baby_age, baby_sex, 
+      create_time, require_code, credit_code, 
+      pay_more, fee_amount, require_status, 
+      user_code)
+    values (#{id,jdbcType=BIGINT}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{addrName,jdbcType=VARCHAR}, #{addrPosX,jdbcType=DOUBLE}, #{addrPosY,jdbcType=DOUBLE}, 
+      #{babyName,jdbcType=VARCHAR}, #{babyAge,jdbcType=INTEGER}, #{babySex,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{requireCode,jdbcType=VARCHAR}, #{creditCode,jdbcType=VARCHAR}, 
+      #{payMore,jdbcType=REAL}, #{feeAmount,jdbcType=REAL}, #{requireStatus,jdbcType=VARCHAR}, 
+      #{userCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequire">
+    update t_baby_require set 
+    <if test="startTime != null">
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="endTime != null">
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="addrName != null">
+      addr_name = #{addrName,jdbcType=VARCHAR},
+    </if>
+    <if test="addrPosX != null">
+      addr_pos_x = #{addrPosX,jdbcType=DOUBLE},
+    </if>
+    <if test="addrPosY != null">
+      addr_pos_y = #{addrPosY,jdbcType=DOUBLE},
+    </if>
+    <if test="babyName != null">
+      baby_name = #{babyName,jdbcType=VARCHAR},
+    </if>
+    <if test="babyAge != null">
+      baby_age = #{babyAge,jdbcType=INTEGER},
+    </if>
+    <if test="babySex != null">
+      baby_sex = #{babySex,jdbcType=VARCHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="requireCode != null">
+      require_code = #{requireCode,jdbcType=VARCHAR},
+    </if>
+    <if test="creditCode != null">
+      credit_code = #{creditCode,jdbcType=VARCHAR},
+    </if>
+    <if test="payMore != null">
+      pay_more = #{payMore,jdbcType=REAL},
+    </if>
+    <if test="feeAmount != null">
+      fee_amount = #{feeAmount,jdbcType=REAL},
+    </if>
+    <if test="requireStatus != null">
+      require_status = #{requireStatus,jdbcType=VARCHAR},
+    </if>
+    <if test="userCode != null">
+      user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.baby.domain.BabyRequire" resultMap="BaseResultMap">
+    select * from t_baby_require where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="startTime!=null">
+      and start_time = #{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime!=null">
+      and end_time = #{endTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="addrName!=null">
+      and addr_name = #{addrName,jdbcType=VARCHAR}
+    </if>
+    <if test="addrPosX!=null">
+      and addr_pos_x = #{addrPosX,jdbcType=DOUBLE}
+    </if>
+    <if test="addrPosY!=null">
+      and addr_pos_y = #{addrPosY,jdbcType=DOUBLE}
+    </if>
+    <if test="babyName!=null">
+      and baby_name = #{babyName,jdbcType=VARCHAR}
+    </if>
+    <if test="babyAge!=null">
+      and baby_age = #{babyAge,jdbcType=INTEGER}
+    </if>
+    <if test="babySex!=null">
+      and baby_sex = #{babySex,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="requireCode!=null">
+      and require_code = #{requireCode,jdbcType=VARCHAR}
+    </if>
+    <if test="creditCode!=null">
+      and credit_code = #{creditCode,jdbcType=VARCHAR}
+    </if>
+    <if test="payMore!=null">
+      and pay_more = #{payMore,jdbcType=REAL}
+    </if>
+    <if test="feeAmount!=null">
+      and fee_amount = #{feeAmount,jdbcType=REAL}
+    </if>
+    <if test="requireStatus!=null">
+      and require_status = #{requireStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="userCode!=null">
+      and user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

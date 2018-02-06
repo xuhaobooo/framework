@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyEvaluationMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.baby.dao.BabyEvaluationMapper.BaseResultMap"
+		id="simpleBabyEvaluation" type="com.sz91online.bgms.module.baby.domain.SimpleBabyEvaluation">
+		<result column="baby_name" property="babyName" />
+		<result column="baby_sex" property="babySex" />
+		<result column="baby_age" property="babyAge" />
+		<result column="fee_amount" property="feeAmount" />
+		<result column="require_start_time" property="requireStartTime" />
+		<result column="require_end_time" property="requireEndTime" />
+		<result column="user_code" property="userCode" />
+		<result column="jigou_code" property="jigouCode" />
+		<result column="jigou_name" property="jigouName" />
+	</resultMap>
+	<select id="findMine" resultMap="simpleBabyEvaluation">
+
+		SELECT
+		eva.*,req.baby_name,req.baby_sex,req.baby_age,req.start_time
+		require_start_time, req.end_time require_end_time,req.pay_more,req.fee_amount,
+		req.user_code user_code,jigou.user_code jigou_code,jigou.user_name jigou_name
+		FROM t_baby_evaluation eva 
+		INNER JOIN t_baby_require req ON eva.require_code = req.require_code
+		INNER JOIN t_baby_tasks task ON req.require_code = task.require_code
+		INNER JOIN t_baby_user_info jigou ON jigou.user_code = task.get_user_code
+		where eva.receive_user_code = #{user_code,jdbcType=VARCHAR}
+		<if test="start_time != null">
+			and eva.create_time &gt; #{start_time,jdbcType=TIMESTAMP}
+		</if>
+		<if test="end_time != null">
+			and eva.create_time &lt; #{end_time,jdbcType=TIMESTAMP}
+		</if>
+
+	</select>
+</mapper>

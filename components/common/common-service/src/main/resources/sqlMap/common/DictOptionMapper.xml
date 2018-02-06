@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.common.dao.DictOptionMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.common.domain.DictOption">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="DIC_CODE" jdbcType="VARCHAR" property="dicCode" />
+    <result column="DIC_LABEL" jdbcType="VARCHAR" property="dicLabel" />
+    <result column="DIC_DESC" jdbcType="VARCHAR" property="dicDesc" />
+    <result column="DIC_CLASS_NAME" jdbcType="VARCHAR" property="dicClassName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_dict_option
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.common.domain.DictOption">
+    insert into t_dict_option (id, DIC_CODE, DIC_LABEL, 
+      DIC_DESC, DIC_CLASS_NAME)
+    values (#{id,jdbcType=BIGINT}, #{dicCode,jdbcType=VARCHAR}, #{dicLabel,jdbcType=VARCHAR}, 
+      #{dicDesc,jdbcType=VARCHAR}, #{dicClassName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.common.domain.DictOption">
+    update t_dict_option
+    set DIC_CODE = #{dicCode,jdbcType=VARCHAR},
+      DIC_LABEL = #{dicLabel,jdbcType=VARCHAR},
+      DIC_DESC = #{dicDesc,jdbcType=VARCHAR},
+      DIC_CLASS_NAME = #{dicClassName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, DIC_CODE, DIC_LABEL, DIC_DESC, DIC_CLASS_NAME
+    from t_dict_option
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, DIC_CODE, DIC_LABEL, DIC_DESC, DIC_CLASS_NAME
+    from t_dict_option
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_dict_option where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.common.domain.DictOption" useGeneratedKeys="true">
+    insert into t_dict_option (id, DIC_CODE, DIC_LABEL, 
+      DIC_DESC, DIC_CLASS_NAME)
+    values (#{id,jdbcType=BIGINT}, #{dicCode,jdbcType=VARCHAR}, #{dicLabel,jdbcType=VARCHAR}, 
+      #{dicDesc,jdbcType=VARCHAR}, #{dicClassName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.common.domain.DictOption">
+    update t_dict_option set 
+    <if test="dicCode != null">
+      DIC_CODE = #{dicCode,jdbcType=VARCHAR},
+    </if>
+    <if test="dicLabel != null">
+      DIC_LABEL = #{dicLabel,jdbcType=VARCHAR},
+    </if>
+    <if test="dicDesc != null">
+      DIC_DESC = #{dicDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="dicClassName != null">
+      DIC_CLASS_NAME = #{dicClassName,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.common.domain.DictOption" resultMap="BaseResultMap">
+    select * from t_dict_option where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="dicCode!=null">
+      and DIC_CODE = #{dicCode,jdbcType=VARCHAR}
+    </if>
+    <if test="dicLabel!=null">
+      and DIC_LABEL = #{dicLabel,jdbcType=VARCHAR}
+    </if>
+    <if test="dicDesc!=null">
+      and DIC_DESC = #{dicDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="dicClassName!=null">
+      and DIC_CLASS_NAME = #{dicClassName,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

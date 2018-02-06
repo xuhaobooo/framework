@@ -1,0 +1,60 @@
+service的基类项目，当新建一个service时，引用此项目。
+service的实现类需 extends DefaultSearchService<User> implements UserService
+其中User为此service相关联的实体类，一般是一个数据库表的实体类，由mybatis自动生成.UserService为自定义接口。
+此时类已有了框架所定义的增删改查等方法，具体参考ICrudService接口。
+
+每个service的实现类都应该有一个版本发现类，用于容器发现所发布的service的版本，方便维护
+@Service
+@Lazy(false)
+@Scope("singleton")
+public class TracerVersionImpl extends VersionService {
+
+	//Service项目的pom.xml配置的groupId
+	private final String groupId = "com.sz91online.bgms.service";
+	
+	//Service项目的pom.xml配置的artifactId
+	private final String artifactId = "bgms-service-tracer";
+
+	@Override
+	public String getGroupId() {
+		return groupId;
+	}
+
+	@Override
+	public String getArtifactId() {
+		return artifactId;
+	}
+}
+
+
+在service的实现类上添加注解 @Traceable，可对saveWithSession和removeWithSession接口作用户操作记录
+@Service
+@Traceable(nameField = "content")
+public class TracerServiceImpl extends DefaultSearchService<Tracer> implements TracerService {
+	//注册class信息，如果此类需要作用户操作记录，须添加下面代码
+	static {
+		ClassInfoMap.put(TracerServiceImpl.class, new ClassInfo("Tracer", "Tracer-test"));//ModuleNameConstants.CRM, CrmTypeConstants.ACCOUNT));
+	}
+}
+
+Server基础框架里集成了一个内存异步消息组件，用guava实现，在任何地方注入 	
+	@Autowired
+	private AsyncEventBus eventBus;
+使用代码		eventBus.post("test"); 发送异步消息
+注册消息处理类，处理类必须在包 com.sz91online.common.eventbus.handler  里
+@Component
+@Scope("singleton")  //必须是单例
+public class EventHandlerTest extends AbstractEventHandler{
+	@Subscribe
+	//方法的参数类型必须与上面发送的类型一致，所在这些类型应该在service的基本项目中定义
+	public void sub(String msg){
+		System.out.println("+++++++++++++++++++++++++++" + msg);
+	}
+}	
+
+
+如果要作数据缓存，引入api-memcached，
+在类上加注释 @EnableCaching
+在要缓存的方法上加入注解  @Cacheable,参数value=memoryMapCache时使用内存缓存
+当value=defaultCache 时使用memcache服务器，注意配置好memcached服务器信息
+参数key为要保存的关键字

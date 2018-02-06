@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-4.3.xsd">
+
+	<cache:annotation-driven />
+
+	<!-- generic cache manager -->
+	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+					name="memoryMapCache" />
+				<!-- <bean class="com.sz91online.common.memcached.MemcachedCache">
+					<property name="cache" ref="defaultCache" />
+				</bean> -->
+			</set>
+		</property>
+	</bean>
+
+	<!-- memcached client defaultCache 
+	<bean name="defaultCache" class="com.google.code.ssm.CacheFactory">
+		<property name="cacheClientFactory">
+			<bean
+				class="com.google.code.ssm.providers.xmemcached.MemcacheClientFactoryImpl" />
+		</property>
+		<property name="addressProvider">
+			<bean class="com.google.code.ssm.config.DefaultAddressProvider">
+				<property name="address" value="${memcached.address}" />
+			</bean>
+		</property>
+		<property name="configuration">
+			<bean class="com.google.code.ssm.providers.CacheConfiguration">
+				<property name="consistentHashing" value="true" />
+			</bean>
+		</property>
+		<property name="cacheName" value="default" />
+
+	</bean>-->
+
+	<!-- dummy cacheManager <bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager"> 
+		<property name="cacheManagers"> <list> <ref bean="simpleCacheManager" /> 
+		</list> </property> <property name="fallbackToNoOpCache" value="true" /> 
+		</bean> -->
+</beans>

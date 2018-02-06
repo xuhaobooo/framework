@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.DeptMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.user.domain.Dept">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="parent_dept_code" jdbcType="VARCHAR" property="parentDeptCode" />
+    <result column="dept_desc" jdbcType="VARCHAR" property="deptDesc" />
+    <result column="dept_code" jdbcType="VARCHAR" property="deptCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_u_dept
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.user.domain.Dept">
+    insert into t_u_dept (id, dept_name, parent_dept_code, 
+      dept_desc, dept_code)
+    values (#{id,jdbcType=BIGINT}, #{deptName,jdbcType=VARCHAR}, #{parentDeptCode,jdbcType=VARCHAR}, 
+      #{deptDesc,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.user.domain.Dept">
+    update t_u_dept
+    set dept_name = #{deptName,jdbcType=VARCHAR},
+      parent_dept_code = #{parentDeptCode,jdbcType=VARCHAR},
+      dept_desc = #{deptDesc,jdbcType=VARCHAR},
+      dept_code = #{deptCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, dept_name, parent_dept_code, dept_desc, dept_code
+    from t_u_dept
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, dept_name, parent_dept_code, dept_desc, dept_code
+    from t_u_dept
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_u_dept where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.user.domain.Dept" useGeneratedKeys="true">
+    insert into t_u_dept (id, dept_name, parent_dept_code, 
+      dept_desc, dept_code)
+    values (#{id,jdbcType=BIGINT}, #{deptName,jdbcType=VARCHAR}, #{parentDeptCode,jdbcType=VARCHAR}, 
+      #{deptDesc,jdbcType=VARCHAR}, #{deptCode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.user.domain.Dept">
+    update t_u_dept set 
+    <if test="deptName != null">
+      dept_name = #{deptName,jdbcType=VARCHAR},
+    </if>
+    <if test="parentDeptCode != null">
+      parent_dept_code = #{parentDeptCode,jdbcType=VARCHAR},
+    </if>
+    <if test="deptDesc != null">
+      dept_desc = #{deptDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="deptCode != null">
+      dept_code = #{deptCode,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.user.domain.Dept" resultMap="BaseResultMap">
+    select * from t_u_dept where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="deptName!=null">
+      and dept_name = #{deptName,jdbcType=VARCHAR}
+    </if>
+    <if test="parentDeptCode!=null">
+      and parent_dept_code = #{parentDeptCode,jdbcType=VARCHAR}
+    </if>
+    <if test="deptDesc!=null">
+      and dept_desc = #{deptDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="deptCode!=null">
+      and dept_code = #{deptCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

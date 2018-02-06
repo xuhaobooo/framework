@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.CaptchaMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.user.domain.Captcha">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone" />
+    <result column="captcha" jdbcType="VARCHAR" property="captcha" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_u_captcha
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.user.domain.Captcha">
+    insert into t_u_captcha (id, mobile_phone, captcha, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{mobilePhone,jdbcType=VARCHAR}, #{captcha,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.user.domain.Captcha">
+    update t_u_captcha
+    set mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      captcha = #{captcha,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, mobile_phone, captcha, create_time
+    from t_u_captcha
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, mobile_phone, captcha, create_time
+    from t_u_captcha
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_u_captcha where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.user.domain.Captcha" useGeneratedKeys="true">
+    insert into t_u_captcha (id, mobile_phone, captcha, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{mobilePhone,jdbcType=VARCHAR}, #{captcha,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.user.domain.Captcha">
+    update t_u_captcha set 
+    <if test="mobilePhone != null">
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+    </if>
+    <if test="captcha != null">
+      captcha = #{captcha,jdbcType=VARCHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.user.domain.Captcha" resultMap="BaseResultMap">
+    select * from t_u_captcha where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="mobilePhone!=null">
+      and mobile_phone = #{mobilePhone,jdbcType=VARCHAR}
+    </if>
+    <if test="captcha!=null">
+      and captcha = #{captcha,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+</mapper>

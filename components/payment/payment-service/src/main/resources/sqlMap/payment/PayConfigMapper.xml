@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayConfigMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.payment.domain.PayConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="conf_desc" jdbcType="VARCHAR" property="confDesc" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pay_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.payment.domain.PayConfig">
+    insert into t_pay_config (id, value, conf_desc, 
+      code)
+    values (#{id,jdbcType=BIGINT}, #{value,jdbcType=VARCHAR}, #{confDesc,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.payment.domain.PayConfig">
+    update t_pay_config
+    set value = #{value,jdbcType=VARCHAR},
+      conf_desc = #{confDesc,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, value, conf_desc, code
+    from t_pay_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, value, conf_desc, code
+    from t_pay_config
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_pay_config where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.payment.domain.PayConfig" useGeneratedKeys="true">
+    insert into t_pay_config (id, value, conf_desc, 
+      code)
+    values (#{id,jdbcType=BIGINT}, #{value,jdbcType=VARCHAR}, #{confDesc,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.payment.domain.PayConfig">
+    update t_pay_config set 
+    <if test="value != null">
+      value = #{value,jdbcType=VARCHAR},
+    </if>
+    <if test="confDesc != null">
+      conf_desc = #{confDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="code != null">
+      code = #{code,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.payment.domain.PayConfig" resultMap="BaseResultMap">
+    select * from t_pay_config where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="value!=null">
+      and value = #{value,jdbcType=VARCHAR}
+    </if>
+    <if test="confDesc!=null">
+      and conf_desc = #{confDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="code!=null">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

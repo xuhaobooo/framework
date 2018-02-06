@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.common.dao.AppUpdateInfoMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.common.domain.AppUpdateInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="appCode" jdbcType="VARCHAR" property="appcode" />
+    <result column="appName" jdbcType="VARCHAR" property="appname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_dict_app_list
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateInfo">
+    insert into t_dict_app_list (id, appCode, appName
+      )
+    values (#{id,jdbcType=BIGINT}, #{appcode,jdbcType=VARCHAR}, #{appname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateInfo">
+    update t_dict_app_list
+    set appCode = #{appcode,jdbcType=VARCHAR},
+      appName = #{appname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, appCode, appName
+    from t_dict_app_list
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, appCode, appName
+    from t_dict_app_list
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_dict_app_list where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateInfo" useGeneratedKeys="true">
+    insert into t_dict_app_list (id, appCode, appName
+      )
+    values (#{id,jdbcType=BIGINT}, #{appcode,jdbcType=VARCHAR}, #{appname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateInfo">
+    update t_dict_app_list set 
+    <if test="appcode != null">
+      appCode = #{appcode,jdbcType=VARCHAR},
+    </if>
+    <if test="appname != null">
+      appName = #{appname,jdbcType=VARCHAR}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.common.domain.AppUpdateInfo" resultMap="BaseResultMap">
+    select * from t_dict_app_list where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="appcode!=null">
+      and appCode = #{appcode,jdbcType=VARCHAR}
+    </if>
+    <if test="appname!=null">
+      and appName = #{appname,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

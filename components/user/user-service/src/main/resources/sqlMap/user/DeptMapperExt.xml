@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.DeptMapperExt">
+  <resultMap extends="com.sz91online.bgms.module.user.dao.DeptMapper.BaseResultMap" id="simpleDept" type="com.sz91online.bgms.module.user.domain.SimpleDept" >
+  	<result column="parent_dept_name" jdbcType="VARCHAR" property="parentDeptName" />
+  </resultMap>
+
+  <select id="getSubDeptByDeptId" resultMap="com.sz91online.bgms.module.user.dao.DeptMapper.BaseResultMap">
+    select id, dept_code, dept_name, parent_dept_code, dept_desc
+    from T_U_DEPT
+    where parent_dept_code = #{id}
+  </select>
+
+</mapper>

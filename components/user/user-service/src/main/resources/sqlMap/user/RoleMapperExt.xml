@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.RoleMapperExt">
+  <resultMap extends="com.sz91online.bgms.module.user.dao.RoleMapper.BaseResultMap" id="simpleRole" type="com.sz91online.bgms.module.user.domain.SimpleRole" >
+  	<result column="user_code" property="userCode"/>
+  </resultMap>
+
+  <select id="finRoleByUserCode" resultMap="simpleRole">
+  	select role.*,user_role.user_code from T_U_ROLE role
+  	inner join T_U_USER_ROLE user_role on role.role_code = user_role.role_code
+  	where role.status='N' and user_role.user_code = #{param1}
+  </select>
+
+</mapper>

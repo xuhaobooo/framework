@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyRequireMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.baby.dao.BabyRequireMapper.BaseResultMap"
+		id="simpleBabyRequire" type="com.sz91online.bgms.module.baby.domain.SimpleBabyRequire">
+		<result column="tel" property="tel"/>
+	</resultMap>
+	<select id="getMyRequire" parameterType="String" resultMap="simpleBabyRequire">
+		select * from t_baby_require where 1=1
+		<if test="param1!=null">
+			and user_code = #{user_code,jdbcType=VARCHAR}
+		</if>
+		<if test="param2!=null">
+			and require_status = #{status,jdbcType=VARCHAR}
+		</if>
+		<if test="param3!=null">
+			and start_time &gt; #{start_time,jdbcType=TIMESTAMP}
+		</if>
+		<if test="param4!=null">
+			and start_time &lt; #{end_time,jdbcType=TIMESTAMP}
+		</if>
+
+	</select>
+
+	<select id="listRequire" resultMap="simpleBabyRequire">
+		select * from t_baby_require
+		where require_status='NEW' and start_time &gt; #{start_time,jdbcType=TIMESTAMP} 
+		and start_time &lt; #{end_time,jdbcType=TIMESTAMP}
+		and addr_pos_x &gt; #{pos_x,jdbcType=DOUBLE} - 0.1
+		and addr_pos_x &lt; #{pos_x,jdbcType=DOUBLE} + 0.1
+		and addr_pos_y &gt; #{pos_y,jdbcType=DOUBLE} - 0.1
+		and addr_pos_y &lt; #{pos_y,jdbcType=DOUBLE} + 0.1
+	</select>
+
+	<update id="setRequireStatus">
+		update t_baby_require set require_status =
+		#{status,jdbcType=VARCHAR} where require_code =
+		#{require_code,jdbcType=VARCHAR}
+	</update>
+
+	<select id="findSimpleRequireByCode" resultMap="simpleBabyRequire">
+		SELECT
+		req.*,uinfo.tel FROM t_baby_require req INNER JOIN t_baby_user_info
+		uinfo ON req.user_code = uinfo.user_code
+		where require_code = #{require_code,jdbcType=VARCHAR}
+	</select>
+</mapper>

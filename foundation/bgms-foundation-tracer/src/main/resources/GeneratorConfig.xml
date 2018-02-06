@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+		PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<context id="MySQL" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+
+		<property name="javaFileEncoding" value="UTF-8" />
+
+		<plugin type="com.sz91online.mybatis.plugin.GeneratorPlugin" />
+
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="false" />
+			<property name="suppressDate" value="true" />
+			<property name="addRemarkComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection connectionURL="jdbc:mysql://sz91online.com:3306/bobo"
+			driverClass="com.mysql.jdbc.Driver" password="123456" userId="hurun" />
+
+		<javaModelGenerator targetPackage="com.sz91online.bgms.module.tracer.domain"
+			targetProject="src/main/java">
+
+			<property name="rootClass" value="com.sz91online.common.db.entity.RootBean" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="."
+			targetProject="src/main/resources/sqlMap/tracer" />
+
+		<javaClientGenerator targetPackage="com.sz91online.bgms.module.tracer.dao"
+			targetProject="src/main/java" type="XMLMAPPER">
+
+			<property name="exampleMethodVisibility" value="public" />
+
+			<property name="rootInterface"
+				value="com.sz91online.common.db.service.ICrudGenericDAO" />
+		</javaClientGenerator>
+		<table domainObjectName="Tracer" tableName="T_LOG_T_TRACER" />
+
+	</context>
+
+</generatorConfiguration>

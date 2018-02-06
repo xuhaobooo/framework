@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyApplyMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.baby.dao.BabyApplyMapper.BaseResultMap"
+		id="simpleBabyApply" type="com.sz91online.bgms.module.baby.domain.SimpleBabyApply" />
+		<update id="updateFail">
+			update t_baby_apply set apply_status = 'FAIL' where require_code = #{param1,jdbcType=VARCHAR} and id != #{param2,jdbcType=BIGINT}
+		</update>
+</mapper>

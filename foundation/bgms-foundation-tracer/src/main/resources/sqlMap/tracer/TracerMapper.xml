@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.tracer.dao.TracerMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.tracer.domain.Tracer">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="module" jdbcType="VARCHAR" property="module" />
+    <result column="sub_module" jdbcType="VARCHAR" property="subModule" />
+    <result column="business_id" jdbcType="BIGINT" property="businessId" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="created_user" jdbcType="VARCHAR" property="createdUser" />
+    <result column="extra_id" jdbcType="BIGINT" property="extraId" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from T_LOG_T_TRACER
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.tracer.domain.Tracer">
+    insert into T_LOG_T_TRACER (id, module, sub_module, 
+      business_id, created_time, action, 
+      created_user, extra_id, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{module,jdbcType=VARCHAR}, #{subModule,jdbcType=VARCHAR}, 
+      #{businessId,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{extraId,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.tracer.domain.Tracer">
+    update T_LOG_T_TRACER
+    set module = #{module,jdbcType=VARCHAR},
+      sub_module = #{subModule,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=BIGINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      action = #{action,jdbcType=VARCHAR},
+      created_user = #{createdUser,jdbcType=VARCHAR},
+      extra_id = #{extraId,jdbcType=BIGINT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, module, sub_module, business_id, created_time, action, created_user, extra_id, 
+    content
+    from T_LOG_T_TRACER
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, module, sub_module, business_id, created_time, action, created_user, extra_id, 
+    content
+    from T_LOG_T_TRACER
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from T_LOG_T_TRACER where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.tracer.domain.Tracer" useGeneratedKeys="true">
+    insert into T_LOG_T_TRACER (id, module, sub_module, 
+      business_id, created_time, action, 
+      created_user, extra_id, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{module,jdbcType=VARCHAR}, #{subModule,jdbcType=VARCHAR}, 
+      #{businessId,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, #{action,jdbcType=VARCHAR}, 
+      #{createdUser,jdbcType=VARCHAR}, #{extraId,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.tracer.domain.Tracer">
+    update T_LOG_T_TRACER set 
+    <if test="module != null">
+      module = #{module,jdbcType=VARCHAR},
+    </if>
+    <if test="subModule != null">
+      sub_module = #{subModule,jdbcType=VARCHAR},
+    </if>
+    <if test="businessId != null">
+      business_id = #{businessId,jdbcType=BIGINT},
+    </if>
+    <if test="createdTime != null">
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="action != null">
+      action = #{action,jdbcType=VARCHAR},
+    </if>
+    <if test="createdUser != null">
+      created_user = #{createdUser,jdbcType=VARCHAR},
+    </if>
+    <if test="extraId != null">
+      extra_id = #{extraId,jdbcType=BIGINT}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.tracer.domain.Tracer" resultMap="BaseResultMap">
+    select * from T_LOG_T_TRACER where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="module!=null">
+      and module = #{module,jdbcType=VARCHAR}
+    </if>
+    <if test="subModule!=null">
+      and sub_module = #{subModule,jdbcType=VARCHAR}
+    </if>
+    <if test="businessId!=null">
+      and business_id = #{businessId,jdbcType=BIGINT}
+    </if>
+    <if test="createdTime!=null">
+      and created_time = #{createdTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="action!=null">
+      and action = #{action,jdbcType=VARCHAR}
+    </if>
+    <if test="createdUser!=null">
+      and created_user = #{createdUser,jdbcType=VARCHAR}
+    </if>
+    <if test="extraId!=null">
+      and extra_id = #{extraId,jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

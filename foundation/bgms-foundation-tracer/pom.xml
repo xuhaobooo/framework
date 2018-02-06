@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.sz91online.bgms</groupId>
+		<artifactId>bgms-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>bgms-foundation-tracer</artifactId>
+	<version>${bgms-foundation-tracer.version}</version>
+	<packaging>jar</packaging>
+
+	<name>bgms-foundation-tracer</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<tracer.build.sourceEncoding>UTF-8</tracer.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.sz91online.bgms</groupId>
+			<artifactId>bgms-foundation-service</artifactId>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.5</version>
+
+				<dependencies>
+
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.32</version>
+					</dependency>
+					<dependency>
+						<groupId>com.sz91online</groupId>
+						<artifactId>mybatis-plugin</artifactId>
+						<version>1.0.0</version>
+						<exclusions>
+							<exclusion>
+								<groupId>org.apache.ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+							<exclusion>
+								<groupId>org.mybatis.generator</groupId>
+								<artifactId>mybatis-generator-core</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

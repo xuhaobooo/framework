@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.baby.dao.BabyInviteMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.baby.domain.BabyInvite">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="invite_user_code" jdbcType="VARCHAR" property="inviteUserCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_baby_invite
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.baby.domain.BabyInvite">
+    insert into t_baby_invite (id, user_code, invite_user_code, 
+      create_time, enable)
+    values (#{id,jdbcType=BIGINT}, #{userCode,jdbcType=VARCHAR}, #{inviteUserCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.baby.domain.BabyInvite">
+    update t_baby_invite
+    set user_code = #{userCode,jdbcType=VARCHAR},
+      invite_user_code = #{inviteUserCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      enable = #{enable,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_code, invite_user_code, create_time, enable
+    from t_baby_invite
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_code, invite_user_code, create_time, enable
+    from t_baby_invite
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_baby_invite where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.baby.domain.BabyInvite" useGeneratedKeys="true">
+    insert into t_baby_invite (id, user_code, invite_user_code, 
+      create_time, enable)
+    values (#{id,jdbcType=BIGINT}, #{userCode,jdbcType=VARCHAR}, #{inviteUserCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.baby.domain.BabyInvite">
+    update t_baby_invite set 
+    <if test="userCode != null">
+      user_code = #{userCode,jdbcType=VARCHAR},
+    </if>
+    <if test="inviteUserCode != null">
+      invite_user_code = #{inviteUserCode,jdbcType=VARCHAR},
+    </if>
+    <if test="createTime != null">
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="enable != null">
+      enable = #{enable,jdbcType=BIT}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.baby.domain.BabyInvite" resultMap="BaseResultMap">
+    select * from t_baby_invite where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="userCode!=null">
+      and user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+    <if test="inviteUserCode!=null">
+      and invite_user_code = #{inviteUserCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime!=null">
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="enable!=null">
+      and enable = #{enable,jdbcType=BIT}
+    </if>
+  </select>
+</mapper>

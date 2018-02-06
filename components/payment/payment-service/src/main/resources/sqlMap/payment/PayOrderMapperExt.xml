@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.payment.dao.PayOrderMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.payment.dao.PayOrderMapper.BaseResultMap"
+		id="simplePayOrder" type="com.sz91online.bgms.module.payment.domain.SimplePayOrder" />
+		
+		<select id="findMine" resultMap="simplePayOrder">
+		SELECT * FROM t_pay_order 
+		where order_status='SUCC' and (from_user_code =	#{user_code,jdbcType=VARCHAR} or to_user_code = #{user_code,jdbcType=VARCHAR})
+		<if test="start_time != null">
+			and record_time &gt; #{start_time,jdbcType=TIMESTAMP}
+		</if>
+		<if test="end_time != null">
+			and record_time &lt; #{end_time,jdbcType=TIMESTAMP}
+		</if>
+		</select>
+		
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.AuthMapper">
+  <resultMap id="BaseResultMap" type="com.sz91online.bgms.module.user.domain.Auth">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="auth_code" jdbcType="VARCHAR" property="authCode" />
+    <result column="auth_name" jdbcType="VARCHAR" property="authName" />
+    <result column="auth_desc" jdbcType="VARCHAR" property="authDesc" />
+    <result column="auth_type" jdbcType="BIT" property="authType" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_u_auth
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sz91online.bgms.module.user.domain.Auth">
+    insert into t_u_auth (id, auth_code, auth_name, 
+      auth_desc, auth_type)
+    values (#{id,jdbcType=BIGINT}, #{authCode,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, 
+      #{authDesc,jdbcType=VARCHAR}, #{authType,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.sz91online.bgms.module.user.domain.Auth">
+    update t_u_auth
+    set auth_code = #{authCode,jdbcType=VARCHAR},
+      auth_name = #{authName,jdbcType=VARCHAR},
+      auth_desc = #{authDesc,jdbcType=VARCHAR},
+      auth_type = #{authType,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, auth_code, auth_name, auth_desc, auth_type
+    from t_u_auth
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, auth_code, auth_name, auth_desc, auth_type
+    from t_u_auth
+  </select>
+  <delete id="removeKeysWithSession" parameterType="java.util.List">
+    delete from t_u_auth where id IN <foreach close=")" collection="list" index="index" item="item" open="(" separator=","> #{item} </foreach>
+  </delete>
+  <insert id="insertAndReturnKey" keyProperty="id" parameterType="com.sz91online.bgms.module.user.domain.Auth" useGeneratedKeys="true">
+    insert into t_u_auth (id, auth_code, auth_name, 
+      auth_desc, auth_type)
+    values (#{id,jdbcType=BIGINT}, #{authCode,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, 
+      #{authDesc,jdbcType=VARCHAR}, #{authType,jdbcType=BIT})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sz91online.bgms.module.user.domain.Auth">
+    update t_u_auth set 
+    <if test="authCode != null">
+      auth_code = #{authCode,jdbcType=VARCHAR},
+    </if>
+    <if test="authName != null">
+      auth_name = #{authName,jdbcType=VARCHAR},
+    </if>
+    <if test="authDesc != null">
+      auth_desc = #{authDesc,jdbcType=VARCHAR},
+    </if>
+    <if test="authType != null">
+      auth_type = #{authType,jdbcType=BIT}
+    </if>
+     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByBean" parameterType="com.sz91online.bgms.module.user.domain.Auth" resultMap="BaseResultMap">
+    select * from t_u_auth where 1=1 
+    <if test="id!=null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="authCode!=null">
+      and auth_code = #{authCode,jdbcType=VARCHAR}
+    </if>
+    <if test="authName!=null">
+      and auth_name = #{authName,jdbcType=VARCHAR}
+    </if>
+    <if test="authDesc!=null">
+      and auth_desc = #{authDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="authType!=null">
+      and auth_type = #{authType,jdbcType=BIT}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz91online.bgms.module.user.dao.UserMapperExt">
+	<resultMap
+		extends="com.sz91online.bgms.module.user.dao.UserMapper.BaseResultMap"
+		id="simpleUser" type="com.sz91online.bgms.module.user.domain.SimpleUser">
+		<result column="role_code" property="roleCode" />
+	</resultMap>
+
+	<select id="findOneUserRole" resultType="long">
+		select id from
+		T_U_USER_ROLE where user_code = #{user_code} and role_code =
+		#{role_code}
+	</select>
+
+	<insert id="addUserRole" parameterType="java.lang.String">
+		insert into T_U_USER_ROLE (user_code,role_code,create_time)
+		values (#{user_code},#{role_code},NOW())
+	</insert>
+
+	<delete id="removeUserRole" parameterType="java.lang.String">
+		delete from T_U_USER_ROLE where user_code = #{user_code} and role_code = #{role_code}
+	</delete>
+
+	<select id="findOneUserAuth" resultType="long">
+		select id from T_U_USER_AUTH where user_code = #{user_code} and auth_code = #{auth_code}
+	</select>
+
+	<insert id="addUserAuth" parameterType="java.lang.String">
+		insert into T_U_USER_AUTH (user_code,auth_code,create_time) 
+		values (#{user_code},#{auth_code},NOW())
+	</insert>
+
+	<delete id="removeUserAuth" parameterType="java.lang.String">
+		delete from T_U_USER_AUTH where user_code = #{user_code}
+		and auth_code = #{auth_code}
+	</delete>
+
+	<select id="getAllUserWithRole" resultMap="simpleUser">
+		SELECT r.id,u.user_code,u.last_name,u.first_name,r.role_code FROM T_U_USER u
+		INNER JOIN T_U_USER_ROLE r ON u.user_code=r.user_code
+	</select>
+
+	<select id="getUserByRoleCode" resultMap="simpleUser">
+		select user.first_name,user.last_name,user.user_code from T_U_USER user inner
+		join T_U_USER_ROLE role_user on user.user_code = role_user.user_code
+		where role_user.role_code = #{role_code}
+	</select>
+
+</mapper>
