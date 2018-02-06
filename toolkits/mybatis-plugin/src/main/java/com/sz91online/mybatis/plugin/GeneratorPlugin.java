@@ -90,7 +90,7 @@ public class GeneratorPlugin extends PluginAdapter {
 				superGenerateList.add(clientFile);
 			}
 		} catch (ShellException e) {
-			System.out.println("�ж��ļ����ڳ���");
+			e.printStackTrace();
 			return superGenerateList;
 		}
 		return superGenerateList;
@@ -147,21 +147,23 @@ public class GeneratorPlugin extends PluginAdapter {
 					.equals(introspectedTable.getPrimaryKeyColumns().get(0).getActualColumnName())) {
 				continue;
 			}
-			XmlElement ifElement = new XmlElement("if");
-			ifElement.addAttribute(new Attribute("test", introspectedColumn.getJavaProperty() + " != null"));
 
-			TextElement tl = null;
+			String fieldName = MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn);
 			if (iter.hasNext()) {
-				tl = new TextElement(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn) + " = "
+				XmlElement ifElement = new XmlElement("if");
+				ifElement.addAttribute(new Attribute("test", introspectedColumn.getJavaProperty() + " != null"));
+
+				TextElement tl = new TextElement(fieldName + " = "
 						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "") + ",");
+				ifElement.addElement(tl);
+				answer.addElement(ifElement);
 			} else {
-				tl = new TextElement(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn) + " = "
-						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, ""));
+				TextElement tl = new TextElement(fieldName + " = ifnull("
+						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "")+","+fieldName+")");
+				answer.addElement(tl);
 			}
 
-			ifElement.addElement(tl);
-
-			answer.addElement(ifElement);
+			
 
 		}
 

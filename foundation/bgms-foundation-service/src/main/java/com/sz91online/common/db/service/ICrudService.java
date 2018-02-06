@@ -36,6 +36,13 @@ public interface ICrudService<T> extends IService {
      * @return
      */
     T findByPrimaryKey(Long primaryKey);
+
+    /**
+     * 根据业务主键查询，专用于唯一业务主键查询，其他任何字段不要使用
+     * @param codePropertyName 主键名称
+     * @param codeValue 查询值
+     */
+    public T findByCode(String codePropertyName, String codeValue);
     
     /**
      * 根据对象查询，会把对象中所有不这空的属性为查询条件进行查询。

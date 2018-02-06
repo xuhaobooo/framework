@@ -7,14 +7,14 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.sz91online.common.exceptions.EBusinessException;
+import com.sz91online.common.utils.PlStringUtils;
+
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.sz91online.common.exceptions.EBusinessException;
 
 public abstract class DefaultCrudService<T> implements ICrudService<T> {
 
@@ -25,6 +25,22 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	@Override
 	public T findByPrimaryKey(Long primaryKey) {
 		return getCrudMapper().selectByPrimaryKey(primaryKey);
+	}
+
+	@Override
+	public T findByCode(String codePropertyName, String codeValue) {
+		if(PlStringUtils.isEmpty(codePropertyName) || PlStringUtils.isEmpty(codeValue)){
+			throw EBusinessException.MIS_PARAMETER_ERROR;
+		}
+
+		T queryBean = createObj();
+		try {
+			PropertyUtils.setProperty(queryBean, codePropertyName, codeValue);
+		} catch (Exception e) {
+			throw EBusinessException.UNEXPECT_PARAMETER_ERROR;
+		}
+		
+		return this.findOne(queryBean);
 	}
 
 	@Override
@@ -53,23 +69,7 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	@Override
 	@Transactional
 	public Long saveWithSession(T record, String username) {
-		if (!StringUtils.isBlank(username)) {
-			try {
-				PropertyUtils.setProperty(record, "createUserCode", username);
-				/* PropertyUtils.setProperty(record, "updateUser", username); */
-			} catch (Exception e) {
-			}
-		}
-
-		try {
-			PropertyUtils.setProperty(record, "createTime", new GregorianCalendar().getTime());
-			/*
-			 * PropertyUtils.setProperty(record, "lastUpdateTime", new
-			 * GregorianCalendar().getTime());
-			 */
-		} catch (Exception e) {
-		}
-
+		
 		try {
 			getCrudMapper().insertAndReturnKey(record);
 			return (Long) PropertyUtils.getProperty(record, "id");
@@ -83,11 +83,6 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	@Override
 	@Transactional
 	public Integer updateWithSession(T record, String username) {
-		try {
-			PropertyUtils.setProperty(record, "lastUpdateTime", new GregorianCalendar().getTime());
-			/* PropertyUtils.setProperty(record, "updateUser", username); */
-		} catch (Exception e) {
-		}
 		try {
 			return getCrudMapper().updateByPrimaryKey(record);
 		} catch (DuplicateKeyException dx) {
