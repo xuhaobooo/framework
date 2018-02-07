@@ -69,12 +69,12 @@ public interface ICrudService<T> extends IService {
      * @param item 要删除的对象
      * @param username 操作者账号
      */
-    void removeWithSession(T item, String username);
+    void removeWithSession(Long id, String username);
 
     /**
      * 批量删除接口
      * @param items
      * @param username
      */
-    void massRemoveWithSession(List<T> items, String username);
+    void massRemoveWithSession(List<Long> ids, String username);
 }

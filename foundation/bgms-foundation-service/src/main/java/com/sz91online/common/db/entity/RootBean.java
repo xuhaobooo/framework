@@ -4,5 +4,6 @@ import java.io.Serializable;
 
 public abstract class RootBean implements Serializable, Cloneable{
 
+	public abstract Long getId();
 	
 }

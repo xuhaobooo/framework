@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+	<springProperty scope="context" name="logLevel" source="log.level" />
+	<springProperty scope="context" name="logPath" source="log.path" />
+
+
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+
+	<root level="ERROR">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+	<logger name="com.sz91online.bgms" level="DEBUG" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+</configuration>

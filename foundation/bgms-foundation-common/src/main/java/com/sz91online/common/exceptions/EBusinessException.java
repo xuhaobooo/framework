@@ -52,6 +52,8 @@ public class EBusinessException extends RuntimeException {
 	
 	public static final EBusinessException BUSINESS_PENDING = new EBusinessException("90040013","业务暂未实现！");
 
+	public static final EBusinessException UPDATE_MISS_ID = new EBusinessException("90040014","更新记录时没有主键参数");;
+
 	protected String resultCode;
 	protected String resultMsg;
 

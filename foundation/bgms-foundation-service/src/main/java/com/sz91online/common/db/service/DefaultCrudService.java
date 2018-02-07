@@ -111,23 +111,14 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 
 	@Override
 	@Transactional
-	public final void removeWithSession(T item, String username) {
-		massRemoveWithSession(Arrays.asList(item), username);
+	public void removeWithSession(Long id, String username) {
+		getCrudMapper().deleteByPrimaryKey(id);
 	}
 
 	@Override
 	@Transactional
-	public void massRemoveWithSession(List<T> items, String username) {
-		List<T> primaryKeys = new ArrayList<>(items.size());
-		for (T item : items) {
-			try {
-				T primaryKey = (T) PropertyUtils.getProperty(item, "id");
-				primaryKeys.add(primaryKey);
-			} catch (Exception e) {
-				throw new EBusinessException(e);
-			}
-		}
-		getCrudMapper().removeKeysWithSession(primaryKeys);
+	public void massRemoveWithSession(List<Long> ids, String username) {
+		getCrudMapper().removeKeysWithSession(ids);
 	}
 
 	@Override
