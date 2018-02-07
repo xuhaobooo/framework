@@ -35,7 +35,7 @@ public abstract class BaseController<T extends RootBean> {
 			+ "分页请求参数----   currentPage：当前页数, pageSize：每页的数量<br/>" + "返回参数都使用http header传输,数据格式如下：<br/>"
 			+ "x-total-count：总记录数<br/> x-current-page：当前显示第几页<br/> x-page-size:每页的记录数<br/> x-page-count：总共多少页<br/> x-cur-page-record-size:当前页有多少条记录")
 	@RequestMapping(value = "/find/base", method = RequestMethod.GET)
-	public @ResponseBody List<T> findByAttr(@RequestParam Map<String, String> map) {
+	public @ResponseBody List<T> findByAttr(@ApiParam(name = "map", value = "请求参数的MAP集合，参数key必须是资源的属性") @RequestParam Map<String, String> map) {
 
 		T queryBean = getService().createObj();
 		this.mapProperty(queryBean, map);
