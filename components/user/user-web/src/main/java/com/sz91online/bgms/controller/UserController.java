@@ -63,36 +63,7 @@ public class UserController extends BaseController<User> {
 	// 不允许访问
 	@ApiIgnore
 	@Override
-	public @ResponseBody List<User> getAllEntity(
-			@RequestHeader(value = "Page_Num", required = false) @ApiParam(name = "Page_Num", value = "当前页数", required = false) Integer pageNum,
-			@RequestHeader(value = "Page_Size", required = false) @ApiParam(name = "Page_Size", value = "每页的数量", required = false) Integer pageSize,
-			HttpServletResponse response) {
-		throw EBusinessException.BUSINESS_PENDING;
-	}
-
-	// 不允许访问
-	@ApiIgnore
-	@Override
-	public @ResponseBody List<User> getCurEntity(
-			@PathVariable @ApiParam(name = "property", value = "属性名称", required = true) String property,
-			@PathVariable @ApiParam(name = "value", value = "属性值", required = true) Object value,
-			@RequestHeader(value = "Page_Num", required = false) @ApiParam(name = "Page_Num", value = "当前页数", required = false) Integer pageNum,
-			@RequestHeader(value = "Page_Size", required = false) @ApiParam(name = "Page_Size", value = "每页的数量", required = false) Integer pageSize,
-			HttpServletResponse response) {
-		throw EBusinessException.BUSINESS_PENDING;
-	}
-
-	// 不允许访问
-	@ApiIgnore
-	@Override
-	public @ResponseBody List<User> getCurEntity1(
-			@PathVariable @ApiParam(name = "property1", value = "属性1名称", required = true) String property1,
-			@PathVariable @ApiParam(name = "value1", value = "属性1值", required = true) Object value1,
-			@PathVariable @ApiParam(name = "property2", value = "属性2名称", required = true) String property2,
-			@PathVariable @ApiParam(name = "value2", value = "属性2值", required = true) Object value2,
-			@RequestHeader(value = "Page_Num", required = false) @ApiParam(name = "Page_Num", value = "当前页数", required = false) Integer pageNum,
-			@RequestHeader(value = "Page_Size", required = false) @ApiParam(name = "Page_Size", value = "每页的数量", required = false) Integer pageSize,
-			HttpServletResponse response) throws IllegalAccessException, InstantiationException {
+	public @ResponseBody List<User> getAllEntity() {
 		throw EBusinessException.BUSINESS_PENDING;
 	}
 
@@ -106,12 +77,7 @@ public class UserController extends BaseController<User> {
 	}
 
 	@Override
-	@RequestMapping(method = RequestMethod.POST, value = "current")
-	@ApiOperation(value = "添加新用户", httpMethod = "POST", notes = "返回执行保存记录后的记录，包含数据库主键id")
-	public @ResponseBody User saveCurEntity(
-			@RequestBody @ApiParam(name = "user", value = "传入json格式,必传login_name,last_name,password.login_name必须是手机号码", required = true) User user,
-			HttpServletRequest request) {
-
+	protected void prepareDataForInsert(User user, HttpServletRequest request) {
 		if (PlStringUtils.isEmpty(user.getLoginName()) || PlStringUtils.isEmpty(user.getLastName())) {
 			throw EBusinessException.MIS_PARAMETER_ERROR;
 		}
@@ -150,84 +116,50 @@ public class UserController extends BaseController<User> {
 
 		user.setStatus(UserStatusEnum.NORMAL.getValue());
 		user.setCreateTime(new Date());
-
-		// baseVo.setData(t);
-		userService.saveWithSession(user, "system");
-
-		user.setPassword(null);
-		return user;
 	}
 
-	/**
-	 * 全量修改
-	 * 
-	 * @param t
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.PATCH, value = "current/{id}")
 	@Override
-	@ApiOperation(value = "全量修改记录", httpMethod = "PATCH", notes = "数据库主健id必须有，此操作为全量更新，未上传的字段会被替换为空值。如果只更新某些字段，请使用。返回执行保存记录后的记录")
-	public @ResponseBody User modifyCurEntity(
-			@PathVariable @ApiParam(name = "id", value = "数据库主键,id", required = true) String id,
-			@RequestBody @ApiParam(name = "用户对象", value = "传入json格式", required = true) User t) {
+	protected void prepareDataForUpdate(User user) {
 
-		if (id == null) {
-			throw EBusinessException.MIS_PARAMETER_ERROR;
+		super.prepareDataForUpdate(user);
+
+		User queryBean = getService().findByPrimaryKey(user.getId());
+		if (queryBean == null) {
+			throw EBusinessException.DB_RECORD_NOT_EXIST;
 		} else {
-			Long curId = t.getId();
-			if (curId == null) {
-				t.setId(Long.parseLong(id));
-			}
-			User queryBean = getService().findByPrimaryKey(Long.parseLong(id));
-			if (queryBean == null) {
-				throw EBusinessException.DB_RECORD_NOT_EXIST;
-			} else {
-				t.setPassword(queryBean.getPassword());
-			}
-
-			if (queryBean.getLoginName().equals("13312312312") || queryBean.getLoginName().equals("13412312312")) {
-				throw new EBusinessException("12323123", "游客用户不能修改个人信息");
-			}
-
-			int count = getService().updateWithSession(t, SessionUtil.getSessionUser().getCode());
-			if (count == 0) {
-				throw EBusinessException.DB_UPDATE_RESULT_0;
-			}
-			return t;
+			user.setPassword(queryBean.getPassword());
 		}
 
+		if (queryBean.getLoginName().equals("13312312312") || queryBean.getLoginName().equals("13412312312")) {
+			throw new EBusinessException("12323123", "游客用户不能修改个人信息");
+		}
 	}
 
 	@Override
 	@ApiOperation(value = "增量更新用户信息", httpMethod = "PATCH", notes = "修改密码可用此接口，只需传id,userCode和密码")
-	@RequestMapping(method = RequestMethod.PATCH, value = "update/{id}")
-	public @ResponseBody User updateCurEntity(
-			@PathVariable @ApiParam(name = "id", value = "操作记录的数据库主健", required = true) String id,
+	@RequestMapping(method = RequestMethod.PATCH, value = "update")
+	public @ResponseBody void updateCurEntity(
 			@RequestBody @ApiParam(name = "业务对象", value = "传入json格式", required = true) User user) {
 
-		if (id == null) {
-			throw EBusinessException.MIS_PARAMETER_ERROR;
-		} else {
+		super.prepareDataForUpdate(user);
 
-			User queryBean = getService().findByPrimaryKey(Long.parseLong(id));
-			if (queryBean == null) {
-				throw EBusinessException.DB_RECORD_NOT_EXIST;
-			}
-
-			if (queryBean.getLoginName().equals("13312312312") || queryBean.getLoginName().equals("13412312312")) {
-				throw new EBusinessException("12323123", "游客用户不能修改个人信息");
-			}
-
-			user.setPassword(PlMD5Util.encrypt(user.getPassword()));
-
-			int count = getService().updateByPrimaryKeySelective(user, SessionUtil.getSessionUser().getCode());
-
-			if (count == 0) {
-				throw EBusinessException.DB_UPDATE_RESULT_0;
-			}
-
-			return user;
+		User queryBean = getService().findByPrimaryKey(user.getId());
+		if (queryBean == null) {
+			throw EBusinessException.DB_RECORD_NOT_EXIST;
 		}
+
+		if (queryBean.getLoginName().equals("13312312312") || queryBean.getLoginName().equals("13412312312")) {
+			throw new EBusinessException("12323123", "游客用户不能修改个人信息");
+		}
+
+		user.setPassword(PlMD5Util.encrypt(user.getPassword()));
+
+		int count = getService().updateByPrimaryKeySelective(user, SessionUtil.getSessionUser().getCode());
+
+		if (count == 0) {
+			throw EBusinessException.DB_UPDATE_RESULT_0;
+		}
+
 	}
 
 	@ApiOperation(value = "通过用户编号查询用户", httpMethod = "GET", notes = "")
@@ -372,43 +304,43 @@ public class UserController extends BaseController<User> {
 		String loginName = map.get("loginName");
 		String status = map.get("status");
 		String lastName = map.get("lastName");
-		
+
 		boolean flag = false;
-		
+
 		User queryBean = new User();
-		if(PlStringUtils.isNotEmpty(loginName)){
+		if (PlStringUtils.isNotEmpty(loginName)) {
 			queryBean.setLoginName(loginName);
 			flag = true;
 		}
-		if(PlStringUtils.isNotEmpty(status)){
+		if (PlStringUtils.isNotEmpty(status)) {
 			queryBean.setStatus(status);
 			flag = true;
 		}
-		if(PlStringUtils.isNotEmpty(lastName)){
+		if (PlStringUtils.isNotEmpty(lastName)) {
 			queryBean.setLastName(lastName);
 			flag = true;
 		}
-		
+
 		String currentPage = map.get("currentPage");
-		if(currentPage == null){
+		if (currentPage == null) {
 			currentPage = "1";
 		}
 		String pageSize = map.get("pageSize");
-		if(pageSize == null){
+		if (pageSize == null) {
 			pageSize = "10";
 		}
-		
+
 		int curPageInt = Integer.parseInt(currentPage);
 		int pageSizeInt = Integer.parseInt(pageSize);
-		if(pageSizeInt >50){
+		if (pageSizeInt > 50) {
 			pageSizeInt = 50;
 		}
-		
+
 		PageHelper.startPage(curPageInt, pageSizeInt);
-		
-		if(flag) {
+
+		if (flag) {
 			List<User> userList = userService.findBySelective(queryBean);
-			
+
 			PageInfo<User> pageUser = new PageInfo<User>(userList);
 
 			response.setHeader("x-total-count", String.valueOf(pageUser.getTotal())); // 总记录数
@@ -417,24 +349,23 @@ public class UserController extends BaseController<User> {
 			response.setHeader("x-page-count", String.valueOf(pageUser.getPages())); // 总共多少页
 			response.setHeader("x-cur-page-record-size", String.valueOf(pageUser.getSize())); // 当前页有多少条记录
 
-			
 			for (Iterator iterator = userList.iterator(); iterator.hasNext();) {
 				User user = (User) iterator.next();
 				user.setPassword(null);
 			}
-			
+
 			return userList;
-		}else {
+		} else {
 			throw EUserException.CANT_FIND_ALL_RECORD;
 		}
-		
+
 	}
-	
+
 	@ApiOperation(value = "查询当前登录用户", httpMethod = "GET", notes = "")
 	@RequestMapping(value = "currentUser", method = RequestMethod.GET)
 	public @ResponseBody User currentUser() {
 		String userCode = SessionUtil.getSessionUser().getCode();
 		return userService.findUserByCode(userCode);
 	}
-	
+
 }

@@ -1,7 +1,5 @@
 package com.sz91online.bgms.module.common.domain;
 
-import org.springframework.test.context.ActiveProfiles;
-
 import com.sz91online.common.db.entity.RootBean;
 
 /**

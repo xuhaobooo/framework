@@ -37,7 +37,7 @@
 
 		<dependency>
 			<groupId>com.sz91online.bgms.bianpai</groupId>
-			<artifactId>bgms-baby-bianpai</artifactId>
+			<artifactId>bgms-bianpai-web</artifactId>
 			<version>2.0.0</version>
 		</dependency>
 

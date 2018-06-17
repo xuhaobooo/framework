@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -71,6 +72,10 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	public Long saveWithSession(T record, String username) {
 		
 		try {
+			if(PropertyUtils.getProperty(record, "code")==null){
+				PropertyUtils.setProperty(record, "code", "A" + new Date().getTime());
+			}
+			
 			getCrudMapper().insertAndReturnKey(record);
 			return (Long) PropertyUtils.getProperty(record, "id");
 		} catch (DuplicateKeyException dx) {

@@ -31,6 +31,10 @@ public abstract class BaseController<T extends RootBean> {
 
 	public abstract ICrudService<T> getService();
 
+	public @ResponseBody List<T> getAllEntity(){
+		return getService().findAll();
+	}
+	
 	@ApiOperation(value = "按条件查询记录", httpMethod = "GET", notes = "参数名为资源的属性字段名称，其他将被抛弃.<br/>"
 			+ "分页请求参数----   currentPage：当前页数, pageSize：每页的数量<br/>" + "返回参数都使用http header传输,数据格式如下：<br/>"
 			+ "x-total-count：总记录数<br/> x-current-page：当前显示第几页<br/> x-page-size:每页的记录数<br/> x-page-count：总共多少页<br/> x-cur-page-record-size:当前页有多少条记录")
@@ -93,8 +97,17 @@ public abstract class BaseController<T extends RootBean> {
 	@RequestMapping(method = RequestMethod.POST, value = "current")
 	public @ResponseBody T saveCurEntity(@RequestBody @ApiParam(name = "业务对象", value = "传入json格式", required = true) T t,
 			HttpServletRequest request) {
+		prepareDataForInsert(t, request);
 		getService().saveWithSession(t, SessionUtil.getSessionUser().getCode());
 		return t;
+	}
+
+	/**
+	 * 添加数据前的数据校验和数据整理
+	 * @param t
+	 */
+	protected void prepareDataForInsert(T t, HttpServletRequest request){
+		
 	}
 
 	/**
@@ -103,9 +116,9 @@ public abstract class BaseController<T extends RootBean> {
 	 * @param t
 	 * @return
 	 */
-	@ApiOperation(value = "全量修改记录", httpMethod = "PATCH", notes = "数据库主健id必须有，此操作为全量更新，未上传的字段会被替换为空值。如果只更新某些字段，请使用。返回执行保存记录后的记录")
+	@ApiOperation(value = "全量修改记录", httpMethod = "PUT", notes = "数据库主健id必须有，此操作为全量更新，未上传的字段会被替换为空值。如果只更新某些字段，请使用。返回执行保存记录后的记录")
 	@RequestMapping(method = RequestMethod.PUT, value = "current")
-	public @ResponseBody T modifyCurEntity(
+	public @ResponseBody void modifyCurEntity(
 			@RequestBody @ApiParam(name = "业务对象", value = "传入json格式", required = true) T t) {
 
 		if (t.getId() == null) {
@@ -117,15 +130,26 @@ public abstract class BaseController<T extends RootBean> {
 			throw EBusinessException.DB_RECORD_NOT_EXIST;
 		}
 
+		prepareDataForUpdate(t);
+		
 		int count = getService().updateWithSession(t, SessionUtil.getSessionUser().getCode());
 
 		if (count == 0) {
 			throw EBusinessException.DB_UPDATE_RESULT_0;
 		}
 
-		return t;
 	}
 
+	/**
+	 * 修改数据前的数据校验和数据整理
+	 * @param t
+	 */
+	protected void prepareDataForUpdate(T t){
+		if(t.getId()==null){
+			throw EBusinessException.UPDATE_MISS_ID;
+		}
+	}
+	
 	/**
 	 * 增量修改
 	 * 
@@ -134,7 +158,7 @@ public abstract class BaseController<T extends RootBean> {
 	 */
 	@ApiOperation(value = "增量更新记录", httpMethod = "PATCH", notes = "数据库主健id必须有，此操作为增量更新，未上传的字段不会被修改。返回执行保存记录后的记录")
 	@RequestMapping(method = RequestMethod.PATCH, value = "current")
-	public @ResponseBody T updateCurEntity(
+	public @ResponseBody void updateCurEntity(
 			@RequestBody @ApiParam(name = "业务对象", value = "传入json格式", required = true) T t) {
 
 		if (t.getId() == null) {
@@ -145,6 +169,8 @@ public abstract class BaseController<T extends RootBean> {
 		if (queryBean == null) {
 			throw EBusinessException.DB_RECORD_NOT_EXIST;
 		}
+		
+		prepareDataForUpdate(t);
 
 		int count = getService().updateByPrimaryKeySelective(t, SessionUtil.getSessionUser().getCode());
 
@@ -152,7 +178,6 @@ public abstract class BaseController<T extends RootBean> {
 			throw EBusinessException.DB_UPDATE_RESULT_0;
 		}
 
-		return t;
 	}
 
 	/**
@@ -165,8 +190,16 @@ public abstract class BaseController<T extends RootBean> {
 	public @ResponseBody void removeCruEntity(
 			@PathVariable @ApiParam(name = "id", value = "操作记录的数据库主健", required = true) String id)
 			throws IllegalAccessException, InstantiationException {
-
+		prepareDataForUpdate(id);
 		getService().removeWithSession(Long.parseLong(id), SessionUtil.getSessionUser().getCode());
+	}
+
+	/**
+	 * 删除数据前的数据校验和数据整理
+	 * @param id
+	 */
+	protected void prepareDataForUpdate(String id){
+		
 	}
 
 	/**

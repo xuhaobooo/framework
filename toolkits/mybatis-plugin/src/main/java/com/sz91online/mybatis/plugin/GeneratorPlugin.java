@@ -145,25 +145,22 @@ public class GeneratorPlugin extends PluginAdapter {
 			IntrospectedColumn introspectedColumn = iter.next();
 			if (introspectedColumn.getActualColumnName()
 					.equals(introspectedTable.getPrimaryKeyColumns().get(0).getActualColumnName())) {
+
+				TextElement tl = new TextElement(" id= "
+						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, ""));
+				answer.addElement(tl);
 				continue;
 			}
 
 			String fieldName = MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn);
-			if (iter.hasNext()) {
-				XmlElement ifElement = new XmlElement("if");
-				ifElement.addAttribute(new Attribute("test", introspectedColumn.getJavaProperty() + " != null"));
 
-				TextElement tl = new TextElement(fieldName + " = "
-						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "") + ",");
-				ifElement.addElement(tl);
-				answer.addElement(ifElement);
-			} else {
-				TextElement tl = new TextElement(fieldName + " = ifnull("
-						+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, "")+","+fieldName+")");
-				answer.addElement(tl);
-			}
+			XmlElement ifElement = new XmlElement("if");
+			ifElement.addAttribute(new Attribute("test", introspectedColumn.getJavaProperty() + " != null"));
 
-			
+			TextElement tl = new TextElement("," + fieldName + " = "
+					+ MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, ""));
+			ifElement.addElement(tl);
+			answer.addElement(ifElement);
 
 		}
 

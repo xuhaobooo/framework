@@ -39,21 +39,9 @@ public class AuthController extends BaseController<Auth> {
 		return autService;
 	}
 
-	/**
-	 * 新增
-	 * 
-	 * @param t
-	 * @return
-	 */
 	@Override
-	@RequestMapping(method = RequestMethod.POST, value = "current")
-	@ApiOperation(value = "添加新权限", httpMethod = "POST", notes = "返回执行保存记录后的记录，包含数据库主键id")
-	public @ResponseBody Auth saveCurEntity(
-			@RequestBody @ApiParam(name = "权限对象", value = "传入json格式,不包括id和authCode", required = true) Auth auth,
-			HttpServletRequest request) {
-		// 自动生成authCode
+	protected void prepareDataForInsert(Auth auth, HttpServletRequest request) {
 		auth.setAuthCode("AU" + new Date().getTime());
-		return super.saveCurEntity(auth, request);
 	}
 
 	/**
