@@ -2,20 +2,17 @@ package com.sz91online.common.db.service;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import com.sz91online.common.exceptions.EBusinessException;
-import com.sz91online.common.utils.PlStringUtils;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sz91online.common.exceptions.EBusinessException;
+import com.sz91online.common.utils.PlStringUtils;
 
 public abstract class DefaultCrudService<T> implements ICrudService<T> {
 
@@ -72,10 +69,19 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	public Long saveWithSession(T record, String username) {
 		
 		try {
-			if(PropertyUtils.getProperty(record, "code")==null){
-				PropertyUtils.setProperty(record, "code", "A" + new Date().getTime());
+			
+			try {
+				PropertyUtils.setProperty(record, "createTime", new Date());
+			} catch (Exception e) {
 			}
 			
+			
+			try {
+				if (PropertyUtils.getProperty(record, "code") == null)
+					PropertyUtils.setProperty(record, "code", "A" + new Date().getTime());
+			} catch (Exception e) {
+			}
+
 			getCrudMapper().insertAndReturnKey(record);
 			return (Long) PropertyUtils.getProperty(record, "id");
 		} catch (DuplicateKeyException dx) {
@@ -101,7 +107,7 @@ public abstract class DefaultCrudService<T> implements ICrudService<T> {
 	@Transactional
 	public Integer updateByPrimaryKeySelective(T record, String username) {
 		try {
-			PropertyUtils.setProperty(record, "lastUpdateTime", new GregorianCalendar().getTime());
+			PropertyUtils.setProperty(record, "updateTime", new Date());
 			/* PropertyUtils.setProperty(record, "updateUser", username); */
 		} catch (Exception e) {
 		}
