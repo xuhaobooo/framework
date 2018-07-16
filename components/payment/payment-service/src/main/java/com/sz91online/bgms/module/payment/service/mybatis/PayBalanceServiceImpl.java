@@ -146,7 +146,7 @@ public class PayBalanceServiceImpl extends DefaultSearchService<PayBalance> impl
 		moneyFlow.setAmount(new BigDecimal(configResultBean.getValue()));
 		moneyFlow.setBusiType("IVT");
 		moneyFlow.setBusiUserCode(inviteUserCode);
-		moneyFlow.setOrderRecordCode("IV" + new PlIdWork().nextId());
+		moneyFlow.setOrderRecordCode("V" + new PlIdWork().nextId());
 		moneyFlow.setRecordTime(new Date());
 		moneyFlow.setUnit("元");
 		moneyFlowService.saveWithSession(moneyFlow, moneyFlow.getBusiUserCode());
@@ -171,7 +171,7 @@ public class PayBalanceServiceImpl extends DefaultSearchService<PayBalance> impl
 		moneyFlow.setAmount(new BigDecimal(0).subtract(withdraw.getWdAmount()));
 		moneyFlow.setBusiType("TX");
 		moneyFlow.setBusiUserCode(withdraw.getBusiUserCode());
-		moneyFlow.setOrderRecordCode("TX" + new PlIdWork().nextId());
+		moneyFlow.setOrderRecordCode("X" + new PlIdWork().nextId());
 		moneyFlow.setRecordTime(new Date());
 		moneyFlow.setUnit("元");
 		moneyFlowService.saveWithSession(moneyFlow, withdraw.getBusiUserCode());

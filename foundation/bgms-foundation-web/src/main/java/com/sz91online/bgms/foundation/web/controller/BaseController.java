@@ -80,11 +80,10 @@ public abstract class BaseController<T extends RootBean> {
 	 * @param value
 	 */
 	@ApiOperation(value = "根据业务主键查询", httpMethod = "GET", notes = "业务主键一般以xxxCode命名,不是业务主键不要使用此接口")
-	@RequestMapping(value = "getByCode/{codePeoperty}/{codeValue}", method = RequestMethod.GET)
+	@RequestMapping(value = "getByCode/{codeValue}", method = RequestMethod.GET)
 	public @ResponseBody T getEntityByCode(
-			@PathVariable @ApiParam(name = "codePeoperty", value = "业务主键属性名称", required = true) String codePeoperty,
 			@PathVariable @ApiParam(name = "codeValue", value = "业务主键值", required = true) String codeValue) {
-		return getService().findByCode(codePeoperty, codeValue);
+		return getService().findByCode("code", codeValue);
 	}
 
 	/**

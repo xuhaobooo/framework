@@ -98,7 +98,7 @@ public class BgmsPreparePaymentServiceImpl implements BgmsPreparePaymentService 
 
 		// 再存交易记录
 		PayOrder saveBean = new PayOrder();
-		saveBean.setOrderRecordCode("OR" + new PaymentIdWork().nextId());
+		saveBean.setOrderRecordCode("O" + new PaymentIdWork().nextId());
 		saveBean.setPayId(payment.getPayId());
 		saveBean.setFromUserCode(simplePayPayment.getPayUserCode());
 		saveBean.setBusiCode(simplePayPayment.getBusiCode());

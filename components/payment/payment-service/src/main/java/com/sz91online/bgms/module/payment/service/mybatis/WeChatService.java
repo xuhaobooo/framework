@@ -196,7 +196,7 @@ public class WeChatService implements ThirdPayService {
 				moneyFlow.setAmount(new BigDecimal(0).subtract(payPayment.getPayAmount()));
 				moneyFlow.setBusiType("BZJ-WC");
 				moneyFlow.setBusiUserCode(payPayment.getPayUserCode());
-				moneyFlow.setOrderRecordCode("BZ" + new PlIdWork().nextId());
+				moneyFlow.setOrderRecordCode("Z" + new PlIdWork().nextId());
 				moneyFlow.setRecordTime(new Date());
 				moneyFlow.setUnit("元");
 				moneyFlowService.saveWithSession(moneyFlow, moneyFlow.getBusiUserCode());

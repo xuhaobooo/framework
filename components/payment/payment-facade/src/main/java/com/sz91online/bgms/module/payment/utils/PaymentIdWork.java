@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class PaymentIdWork {
 
-	private final String seqId="PY";
+	private final String seqId="M";
 	
     protected static final Logger LOG = LoggerFactory.getLogger(PaymentIdWork.class);
 
